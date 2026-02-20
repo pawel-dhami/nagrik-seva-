@@ -1,0 +1,3498 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NagrikSeva — National Civic Issue Reporting Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════
+   DESIGN SYSTEM — Official Government Portal
+   Theme: Institutional Gravitas + Modern Clarity
+   Aesthetic: Clean authority with warmth
+═══════════════════════════════════════════════════════ */
+
+:root {
+  /* Dark mode (default) */
+  --bg-base: #0C1220;
+  --bg-surface: #111827;
+  --bg-card: #161E2E;
+  --bg-card-hover: #1C2638;
+  --bg-elevated: #1E2A3E;
+  --bg-input: rgba(255,255,255,0.05);
+
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.16);
+  --border-active: rgba(0,121,191,0.5);
+
+  --text-primary: #EEF2FF;
+  --text-secondary: #94A3B8;
+  --text-muted: #4B5D7A;
+  --text-on-accent: #FFFFFF;
+
+  /* Brand — Indian Government */
+  --saffron: #FF6B00;
+  --saffron-light: #FF8C3A;
+  --saffron-pale: rgba(255,107,0,0.12);
+  --india-blue: #0047AB;
+  --india-blue-light: #1565D8;
+  --india-blue-pale: rgba(0,71,171,0.15);
+  --india-green: #138808;
+  --india-green-pale: rgba(19,136,8,0.12);
+  --ashoka-gold: #F5A623;
+
+  --accent: #1565D8;
+  --accent-hover: #1976D2;
+  --accent-pale: rgba(21,101,210,0.15);
+
+  --teal: #0097A7;
+  --red: #E53935;
+  --red-pale: rgba(229,57,53,0.12);
+  --amber: #F59E0B;
+  --amber-pale: rgba(245,158,11,0.12);
+  --green: #2E7D32;
+  --green-pale: rgba(46,125,50,0.12);
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.4);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.5);
+  --shadow-accent: 0 8px 32px rgba(21,101,210,0.3);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+}
+
+[data-theme="light"] {
+  --bg-base: #F0F4FA;
+  --bg-surface: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F8FAFD;
+  --bg-elevated: #EEF2FF;
+  --bg-input: rgba(0,0,0,0.04);
+
+  --border: rgba(0,0,0,0.08);
+  --border-hover: rgba(0,0,0,0.16);
+  --border-active: rgba(0,71,171,0.4);
+
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #94A3B8;
+  --text-on-accent: #FFFFFF;
+
+  --saffron-pale: rgba(255,107,0,0.08);
+  --india-blue-pale: rgba(0,71,171,0.08);
+  --india-green-pale: rgba(19,136,8,0.08);
+  --accent-pale: rgba(21,101,210,0.08);
+  --red-pale: rgba(229,57,53,0.08);
+  --amber-pale: rgba(245,158,11,0.08);
+  --green-pale: rgba(46,125,50,0.08);
+
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 8px 24px rgba(0,0,0,0.12);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,0.16);
+  --shadow-accent: 0 8px 32px rgba(21,101,210,0.2);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: auto; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background 0.4s, color 0.4s;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border-hover); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ══════════════════════════════════════
+   SCREEN SYSTEM
+══════════════════════════════════════ */
+.screen { display:none; }
+.screen.active { display:block; }
+
+/* Landing hides the shared header chrome */
+body.on-landing .gov-ribbon,
+body.on-landing #main-header { display:none !important; }
+
+/* After login, the landing has no sticky header competing */
+body.logged-in #screen-landing { display:none !important; }
+
+/* ══════════════════════════════════════
+   NATIONAL HEADER BAR
+══════════════════════════════════════ */
+.gov-ribbon {
+  background: var(--india-blue);
+  padding: 6px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: rgba(255,255,255,0.85);
+  letter-spacing: 0.3px;
+}
+
+.gov-ribbon-left { display:flex; align-items:center; gap:16px; }
+.gov-ribbon-links { display:flex; gap:16px; }
+.gov-ribbon-links a { color:rgba(255,255,255,0.7); text-decoration:none; transition: color 0.2s; }
+.gov-ribbon-links a:hover { color:#fff; }
+
+.app-header {
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  height: 68px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  transition: background var(--transition), border-color var(--transition);
+}
+
+[data-theme="light"] .app-header { background: rgba(255,255,255,0.95); }
+[data-theme="dark"] .app-header { background: rgba(17,24,39,0.95); }
+
+.header-brand { display:flex; align-items:center; gap:14px; }
+
+.brand-emblem {
+  width: 48px;
+  height: 48px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.brand-emblem canvas {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.brand-text-block { line-height: 1.2; }
+
+.brand-name-en {
+  font-family: 'EB Garamond', serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.brand-name-hi {
+  font-size: 11px;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+.header-right { display:flex; align-items:center; gap:12px; }
+
+/* Theme Toggle */
+.theme-toggle {
+  width: 52px;
+  height: 28px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  position: relative;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+
+.theme-toggle::before {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+[data-theme="light"] .theme-toggle::before {
+  transform: translateX(24px);
+  background: var(--saffron);
+}
+
+.theme-icon {
+  position: absolute;
+  font-size: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.theme-icon.moon { left: 6px; }
+.theme-icon.sun { right: 6px; }
+
+.user-pill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.user-pill:hover { border-color: var(--border-hover); }
+
+.user-avatar {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--india-blue), var(--india-blue-light));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+}
+
+.user-name { font-size: 14px; font-weight: 500; }
+
+.btn-outline {
+  padding: 8px 18px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-outline:hover { border-color: var(--border-hover); color: var(--text-primary); }
+
+/* ══════════════════════════════════════
+   LOGIN PAGE — clean, centered, no map
+══════════════════════════════════════ */
+#screen-landing { background: var(--bg-base); }
+
+.login-page-wrap { display:flex; flex-direction:column; min-height:100vh; }
+
+.login-gov-ribbon {
+  background: var(--india-blue);
+  padding: 6px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: rgba(255,255,255,0.85);
+}
+.login-ribbon-links a { color:rgba(255,255,255,0.7); text-decoration:none; margin-left:12px; }
+.login-ribbon-links a:hover { color:#fff; }
+
+.login-header-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 32px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.login-split {
+  display: grid;
+  grid-template-columns: 1fr 480px;
+  flex: 1;
+  min-height: calc(100vh - 88px);
+}
+
+.login-left-panel {
+  background: linear-gradient(160deg, var(--india-blue) 0%, #003080 60%, #001A50 100%);
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px 64px;
+  position: relative; overflow: hidden;
+}
+
+.login-left-panel::before {
+  content: ''; position: absolute; top:-100px; right:-100px;
+  width:500px; height:500px;
+  background: radial-gradient(circle, rgba(255,255,255,0.05) 0%, transparent 70%);
+  border-radius:50%;
+}
+
+.login-left-panel::after {
+  content: ''; position: absolute; bottom:-80px; left:-80px;
+  width:400px; height:400px;
+  background: radial-gradient(circle, rgba(255,107,0,0.12) 0%, transparent 70%);
+  border-radius:50%;
+}
+
+.llp-inner { position:relative; z-index:1; max-width:480px; }
+
+.login-govt-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 100px;
+  font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.9); margin-bottom: 20px;
+}
+
+.login-headline {
+  font-family: 'EB Garamond', serif;
+  font-size: 64px; font-weight: 700; line-height: 1.0;
+  color: #FFFFFF; margin: 16px 0 20px;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+.login-sub {
+  font-size: 17px; color: rgba(255,255,255,0.75); line-height: 1.6; max-width: 400px;
+}
+
+.tricolor-bar {
+  display: flex; height: 4px; border-radius: 2px; overflow: hidden;
+  margin: 32px 0 28px; width: 120px;
+}
+.tc-saffron { flex:1; background:#FF6B00; }
+.tc-white { flex:1; background:rgba(255,255,255,0.4); }
+.tc-green { flex:1; background:#138808; }
+
+.login-impact-stats {
+  display: flex; align-items: center;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  padding: 20px 24px; margin-bottom: 28px;
+}
+.lis-item { flex:1; text-align:center; }
+.lis-val { font-family:'EB Garamond',serif; font-size:28px; font-weight:700; color:#fff; line-height:1; }
+.lis-label { font-size:12px; color:rgba(255,255,255,0.6); margin-top:4px; }
+.lis-divider { width:1px; height:40px; background:rgba(255,255,255,0.15); margin:0 8px; }
+
+.login-features { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+.lf-item { display:flex; align-items:center; gap:10px; font-size:14px; color:rgba(255,255,255,0.75); }
+.lf-icon { font-size:18px; flex-shrink:0; }
+
+.login-right-panel {
+  background: var(--bg-base);
+  display: flex; align-items: center; justify-content: center;
+  padding: 40px;
+}
+
+.login-card {
+  width: 100%; max-width: 380px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  animation: card-appear 0.5s cubic-bezier(0.4,0,0.2,1) both;
+}
+
+@keyframes card-appear {
+  from { opacity:0; transform:translateY(24px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.lc-header {
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+.lc-title { font-family:'EB Garamond',serif; font-size:26px; font-weight:700; margin-bottom:4px; }
+.lc-sub { font-size:13px; color:var(--text-secondary); }
+
+.login-card .login-tabs { margin: 20px 28px 0; }
+.login-card #citizen-form,
+.login-card #authority-form { padding: 20px 28px 4px; }
+
+.lc-footer {
+  padding: 12px 28px 20px;
+  text-align: center;
+  font-size: 12px; color: var(--text-muted);
+}
+
+.login-tabs {
+  display: flex;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-md);
+  padding: 4px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+
+.ltab {
+  flex: 1; padding: 10px; text-align: center;
+  border: none; background: transparent;
+  border-radius: 9px; color: var(--text-muted);
+  font-size: 14px; font-weight: 600;
+  cursor: pointer; transition: all var(--transition);
+  font-family: 'Source Sans 3', sans-serif;
+}
+.ltab.active { background: var(--accent); color: #fff; box-shadow: var(--shadow-accent); }
+
+.form-group { margin-bottom: 20px; }
+
+.form-label {
+  display: block; font-size: 12px; font-weight: 600;
+  letter-spacing: 1.2px; text-transform: uppercase;
+  color: var(--text-secondary); margin-bottom: 8px;
+}
+
+.form-input-wrap { position: relative; }
+
+.form-input {
+  width: 100%; padding: 13px 16px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary); font-size: 15px;
+  font-family: 'Source Sans 3', sans-serif;
+  outline: none; transition: all var(--transition);
+}
+.form-input:focus {
+  border-color: var(--accent); background: var(--accent-pale);
+  box-shadow: 0 0 0 3px rgba(21,101,210,0.12);
+}
+.form-input::placeholder { color: var(--text-muted); }
+
+.input-icon {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-size: 16px; color: var(--text-muted);
+}
+
+.security-note {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 12px 16px;
+  background: var(--green-pale);
+  border: 1px solid rgba(46,125,50,0.25);
+  border-radius: var(--radius-sm);
+  font-size: 13px; color: var(--text-secondary);
+  margin-bottom: 20px; line-height: 1.5;
+}
+.security-note .sn-icon { font-size:18px; flex-shrink:0; margin-top:1px; }
+
+.btn-primary {
+  width: 100%; padding: 15px;
+  background: linear-gradient(135deg, var(--india-blue) 0%, var(--india-blue-light) 100%);
+  border: none; border-radius: var(--radius-sm);
+  color: #fff; font-size: 16px; font-weight: 700;
+  font-family: 'Source Sans 3', sans-serif;
+  letter-spacing: 0.5px; cursor: pointer;
+  transition: all var(--transition); box-shadow: var(--shadow-accent);
+  position: relative; overflow: hidden;
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+  opacity: 0; transition: opacity var(--transition);
+}
+.btn-primary:hover::after { opacity: 1; }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 12px 40px rgba(21,101,210,0.45); }
+.btn-primary:active { transform: translateY(0); }
+
+/* Live dot (used in citizen home too) */
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--red);
+  animation: live-pulse 1.2s ease-in-out infinite;
+}
+@keyframes live-pulse {
+  0%,100% { opacity:1; transform:scale(1); }
+  50% { opacity:0.4; transform:scale(0.8); }
+}
+
+.live-chip {
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 14px;
+  background: rgba(229,57,53,0.15);
+  border: 1px solid rgba(229,57,53,0.35);
+  border-radius: 100px; font-size: 12px; font-weight: 700;
+  color: #EF5350; letter-spacing: 1px; text-transform: uppercase;
+}
+
+/* Map legend (used in citizen/authority screens) */
+.map-legend {
+  position: absolute; bottom: 20px; left: 20px; z-index: 10;
+  background: rgba(17,24,39,0.85);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px 16px;
+  backdrop-filter: blur(10px); min-width: 180px;
+}
+[data-theme="light"] .map-legend { background: rgba(255,255,255,0.9); }
+.map-legend-title { font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color:var(--text-muted); margin-bottom:10px; }
+.legend-item { display:flex; align-items:center; gap:10px; font-size:13px; color:var(--text-secondary); margin-bottom:6px; }
+.legend-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+.map-tooltip {
+  position:absolute; background:rgba(17,24,39,0.95); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:10px 14px; font-size:13px;
+  pointer-events:none; z-index:20; display:none;
+  backdrop-filter:blur(10px); box-shadow:var(--shadow-md); min-width:160px;
+}
+[data-theme="light"] .map-tooltip { background:rgba(255,255,255,0.98); }
+.map-tooltip strong { font-size:14px; display:block; margin-bottom:4px; }
+
+@media(max-width:900px) {
+  .login-split { grid-template-columns:1fr; }
+  .login-left-panel { display:none; }
+  .login-right-panel { min-height:calc(100vh - 88px); }
+}
+
+/* ══════════════════════════════════════
+   CITIZEN HOME
+══════════════════════════════════════ */
+#screen-citizen { display:none; flex-direction:column; }
+#screen-citizen.active { display:flex; }
+
+.citizen-body {
+  padding: 32px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* REPORT BANNER — Big, clear, accessible */
+.report-cta-banner {
+  background: linear-gradient(135deg, var(--india-blue) 0%, #1976D2 50%, #0047AB 100%);
+  border-radius: var(--radius-xl);
+  padding: 36px 40px;
+  margin-bottom: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 48px rgba(0,71,171,0.35);
+  animation: banner-appear 0.6s cubic-bezier(0.4,0,0.2,1) both;
+}
+
+@keyframes banner-appear {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.report-cta-banner::before {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.report-cta-banner::after {
+  content: '';
+  position: absolute;
+  bottom: -40px; left: 30%;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(255,107,0,0.15) 0%, transparent 70%);
+  border-radius: 50%;
+}
+
+.rcb-left { position: relative; z-index: 1; }
+
+.rcb-tag {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.7);
+  margin-bottom: 12px;
+}
+
+.rcb-left h2 {
+  font-family: 'EB Garamond', serif;
+  font-size: 34px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+.rcb-left p {
+  font-size: 16px;
+  color: rgba(255,255,255,0.8);
+  max-width: 400px;
+}
+
+.rcb-right { display:flex; flex-direction:column; gap:12px; align-items:flex-end; position:relative; z-index:1; }
+
+.btn-report-big {
+  padding: 18px 36px;
+  background: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  color: var(--india-blue);
+  font-size: 18px;
+  font-weight: 700;
+  font-family: 'Source Sans 3', sans-serif;
+  cursor: pointer;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+  white-space: nowrap;
+}
+
+.btn-report-big:hover {
+  transform: scale(1.03);
+  box-shadow: 0 8px 28px rgba(0,0,0,0.35);
+}
+
+.btn-report-big .brb-icon { font-size: 22px; }
+
+.rcb-badges { display:flex; gap:8px; }
+
+.rcb-badge {
+  padding: 5px 12px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 100px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.9);
+  white-space: nowrap;
+}
+
+/* Stats row */
+.stats-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-tile {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  transition: all var(--transition);
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  animation: tile-in 0.5s ease both;
+}
+
+.stat-tile:nth-child(1) { animation-delay:0.1s; }
+.stat-tile:nth-child(2) { animation-delay:0.2s; }
+.stat-tile:nth-child(3) { animation-delay:0.3s; }
+
+@keyframes tile-in {
+  from { opacity:0; transform:translateY(16px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.stat-tile:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.st-icon-wrap {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.st-icon-wrap.blue { background: var(--india-blue-pale); }
+.st-icon-wrap.amber { background: var(--amber-pale); }
+.st-icon-wrap.green { background: var(--green-pale); }
+.st-icon-wrap.red { background: var(--red-pale); }
+
+.stat-tile .sv { font-family:'EB Garamond',serif; font-size:40px; font-weight:700; line-height:1; }
+.st-label { font-size:13px; color:var(--text-secondary); margin-top:4px; }
+.st-delta { font-size:12px; font-weight:600; margin-top:8px; }
+.delta-up { color:#2E7D32; }
+.delta-down { color:var(--red); }
+
+/* Complaint Cards */
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-title {
+  font-family: 'EB Garamond', serif;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.section-link {
+  font-size: 14px;
+  color: var(--accent);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.section-link:hover { text-decoration: underline; }
+
+.complaints-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 16px;
+  margin-bottom: 36px;
+}
+
+.complaint-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+  animation: card-in 0.4s ease both;
+}
+
+.complaint-card:nth-child(1) { animation-delay:0.05s; }
+.complaint-card:nth-child(2) { animation-delay:0.1s; }
+.complaint-card:nth-child(3) { animation-delay:0.15s; }
+.complaint-card:nth-child(4) { animation-delay:0.2s; }
+
+@keyframes card-in {
+  from { opacity:0; transform:translateY(12px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.complaint-card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+.complaint-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 4px; height: 100%;
+  border-radius: 2px 0 0 2px;
+}
+
+.complaint-card.open::before { background: var(--saffron); }
+.complaint-card.progress::before { background: var(--accent); }
+.complaint-card.resolved::before { background: var(--india-green); }
+.complaint-card.escalated::before { background: var(--red); }
+
+.cc-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cc-icon {
+  width: 44px; height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+}
+
+.cc-icon.orange { background: var(--saffron-pale); }
+.cc-icon.blue { background: var(--india-blue-pale); }
+.cc-icon.yellow { background: var(--amber-pale); }
+.cc-icon.teal { background: rgba(0,151,167,0.12); }
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.status-chip.open { background:var(--saffron-pale); color:var(--saffron); }
+.status-chip.progress { background:var(--india-blue-pale); color:var(--india-blue-light); }
+.status-chip.resolved { background:var(--india-green-pale); color:var(--india-green); }
+.status-chip.escalated { background:var(--red-pale); color:var(--red); }
+
+.s-pulse {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  animation: live-pulse 1.5s ease-in-out infinite;
+}
+
+.cc-title { font-size:16px; font-weight:600; margin-bottom:4px; }
+.cc-meta { font-size:13px; color:var(--text-muted); margin-bottom:14px; }
+
+.cc-footer { display:flex; align-items:center; justify-content:space-between; }
+
+.ticket-mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.progress-mini {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 12px 0 8px;
+}
+
+.pm-fill { height:100%; border-radius:2px; transition: width 1s ease; }
+
+/* ══════════════════════════════════════
+   REPORT FORM
+══════════════════════════════════════ */
+#screen-report { display:none; flex-direction:column; }
+#screen-report.active { display:flex; }
+
+.report-layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 24px;
+  padding: 32px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.form-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.form-card-header {
+  padding: 28px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+}
+
+.form-card-header h2 {
+  font-family: 'EB Garamond', serif;
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.form-card-header p { font-size:14px; color:var(--text-secondary); }
+
+.form-body { padding: 32px; }
+
+.form-section-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 28px 0 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-section-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.form-section-title:first-child { margin-top: 0; }
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.cat-btn {
+  padding: 14px 10px;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition);
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.cat-btn:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+}
+
+.cat-btn.selected {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+}
+
+.cat-btn-icon { font-size: 26px; display:block; margin-bottom:6px; }
+.cat-btn-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+.cat-btn.selected .cat-btn-label { color: var(--accent); }
+
+/* Priority */
+.priority-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.prio-btn {
+  padding: 14px 10px;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  text-align: center;
+  transition: all var(--transition);
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.prio-btn:hover { border-color: var(--border-hover); }
+.prio-icon { font-size: 22px; display:block; margin-bottom:4px; }
+.prio-label { font-size: 12px; font-weight: 700; color: var(--text-secondary); }
+
+.prio-btn.low.sel { border-color: var(--india-green); background: var(--green-pale); }
+.prio-btn.low.sel .prio-label { color: var(--india-green); }
+.prio-btn.medium.sel { border-color: var(--amber); background: var(--amber-pale); }
+.prio-btn.medium.sel .prio-label { color: var(--amber); }
+.prio-btn.high.sel { border-color: var(--saffron); background: var(--saffron-pale); }
+.prio-btn.high.sel .prio-label { color: var(--saffron); }
+.prio-btn.critical.sel { border-color: var(--red); background: var(--red-pale); }
+.prio-btn.critical.sel .prio-label { color: var(--red); }
+
+/* Location */
+.location-bar {
+  display: flex;
+  gap: 10px;
+  align-items: stretch;
+}
+
+.location-bar .form-input { flex: 1; margin-bottom: 0; }
+
+.gps-btn {
+  padding: 0 18px;
+  background: var(--india-green-pale);
+  border: 1px solid rgba(19,136,8,0.3);
+  border-radius: var(--radius-sm);
+  color: var(--india-green);
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: 'Source Sans 3', sans-serif;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+[data-theme="light"] .gps-btn { color: #1B5E20; border-color: rgba(27,94,32,0.4); }
+
+.gps-btn:hover { background: rgba(19,136,8,0.2); }
+
+/* Photo upload */
+.photo-dropzone {
+  border: 2px dashed var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.photo-dropzone:hover {
+  border-color: var(--accent);
+  background: var(--accent-pale);
+}
+
+.pd-icon { font-size: 44px; margin-bottom: 14px; }
+.pd-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+.pd-sub { font-size: 13px; color: var(--text-muted); }
+
+.photo-thumbs { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; justify-content:center; }
+
+.photo-thumb {
+  width: 80px; height: 80px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  animation: thumb-pop 0.3s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes thumb-pop {
+  from { opacity:0; transform:scale(0.7); }
+  to { opacity:1; transform:scale(1); }
+}
+
+/* AI badge */
+.ai-insight {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 18px;
+  background: linear-gradient(135deg, rgba(0,151,167,0.1), rgba(21,101,210,0.08));
+  border: 1px solid rgba(0,151,167,0.25);
+  border-radius: var(--radius-md);
+  margin-top: 12px;
+  animation: insight-slide 0.4s ease both;
+}
+
+@keyframes insight-slide {
+  from { opacity:0; transform:translateX(-10px); }
+  to { opacity:1; transform:translateX(0); }
+}
+
+.ai-icon { font-size: 22px; flex-shrink: 0; }
+.ai-text { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+.ai-text strong { color: var(--teal); }
+
+/* Anonymous */
+.anon-options { display:flex; flex-direction:column; gap:10px; }
+
+.anon-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.anon-card:hover { border-color: var(--border-hover); }
+.anon-card input[type=checkbox] { width:18px; height:18px; accent-color: var(--accent); flex-shrink:0; }
+.anon-label { font-size:14px; font-weight:600; }
+.anon-desc { font-size:12px; color:var(--text-muted); margin-top:2px; }
+
+/* Form actions */
+.form-actions {
+  padding: 24px 32px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.btn-ghost {
+  padding: 12px 24px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 15px;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.btn-ghost:hover { border-color: var(--border-hover); color: var(--text-primary); }
+
+.btn-submit {
+  padding: 12px 32px;
+  background: linear-gradient(135deg, var(--india-blue), var(--india-blue-light));
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: 'Source Sans 3', sans-serif;
+  box-shadow: var(--shadow-accent);
+}
+
+.btn-submit:hover { transform:translateY(-1px); box-shadow: 0 12px 36px rgba(21,101,210,0.45); }
+
+/* Sidebar hints */
+.report-sidebar { display:flex; flex-direction:column; gap:16px; }
+
+.sidebar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+}
+
+.sc-title {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sc-steps { display:flex; flex-direction:column; gap:12px; }
+
+.sc-step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.sc-num {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--india-blue-pale);
+  color: var(--india-blue-light);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+[data-theme="light"] .sc-num { background: var(--accent-pale); color: var(--accent); }
+
+/* ══════════════════════════════════════
+   TICKET CONFIRMATION
+══════════════════════════════════════ */
+#screen-ticket { display:none; align-items:center; justify-content:center; }
+#screen-ticket.active { display:flex; }
+
+.ticket-page {
+  padding: 60px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: calc(100vh - 120px);
+}
+
+.ticket-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 48px;
+  max-width: 560px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  animation: ticket-appear 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+
+@keyframes ticket-appear {
+  from { opacity:0; transform:scale(0.92); }
+  to { opacity:1; transform:scale(1); }
+}
+
+.ticket-check {
+  width: 80px; height: 80px;
+  background: var(--india-green-pale);
+  border: 3px solid var(--india-green);
+  border-radius: 50%;
+  margin: 0 auto 24px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 36px;
+  box-shadow: 0 0 40px rgba(19,136,8,0.25);
+  animation: check-pop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both;
+}
+
+@keyframes check-pop {
+  from { transform:scale(0); }
+  to { transform:scale(1); }
+}
+
+.ticket-card h2 {
+  font-family: 'EB Garamond', serif;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.ticket-card .tc-sub { font-size:15px; color:var(--text-secondary); margin-bottom:28px; }
+
+.ticket-id-box {
+  background: var(--bg-elevated);
+  border: 1px dashed var(--border-hover);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 24px;
+}
+
+.ticket-id-box .tid-label { font-size:12px; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+
+.ticket-id-box .tid { font-family:'JetBrains Mono',monospace; font-size:28px; font-weight:500; color:var(--saffron); letter-spacing:3px; }
+
+.ticket-info-rows { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+
+.tir {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  text-align: left;
+}
+
+.tir-icon { font-size:18px; flex-shrink:0; }
+.tir-text { color:var(--text-secondary); }
+.tir-text strong { color:var(--text-primary); }
+
+/* Progress steps */
+.progress-steps {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  gap: 0;
+}
+
+.ps-step { flex:1; text-align:center; position:relative; }
+
+.ps-step::after {
+  content: '';
+  position: absolute;
+  top: 16px; left: 50%; right: -50%;
+  height: 2px;
+}
+
+.ps-step:last-child::after { display:none; }
+.ps-step.done::after { background: var(--india-green); }
+.ps-step.active::after { background: linear-gradient(90deg, var(--india-green), var(--border)); }
+.ps-step.waiting::after { background: var(--border); }
+
+.ps-circle {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  margin: 0 auto 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700;
+  position: relative; z-index: 1;
+}
+
+.ps-step.done .ps-circle { background: var(--india-green); color:#fff; }
+.ps-step.active .ps-circle { background: var(--accent); color:#fff; box-shadow: var(--shadow-accent); }
+.ps-step.waiting .ps-circle { background: var(--bg-elevated); border: 2px solid var(--border); color:var(--text-muted); font-size:12px; }
+
+.ps-label { font-size:11px; color:var(--text-muted); }
+.ps-step.done .ps-label { color:var(--india-green); }
+.ps-step.active .ps-label { color:var(--accent); font-weight:600; }
+
+.ticket-actions { display:flex; gap:12px; justify-content:center; }
+
+.btn-track {
+  padding: 12px 28px;
+  background: linear-gradient(135deg,var(--india-blue),var(--india-blue-light));
+  border:none; border-radius:var(--radius-sm);
+  color:#fff; font-size:15px; font-weight:700;
+  cursor:pointer; transition:all var(--transition);
+  font-family:'Source Sans 3',sans-serif;
+}
+
+.btn-track:hover { transform:translateY(-1px); box-shadow:var(--shadow-accent); }
+
+/* ══════════════════════════════════════
+   TRACK STATUS
+══════════════════════════════════════ */
+#screen-track { display:none; flex-direction:column; }
+#screen-track.active { display:flex; }
+
+.track-body {
+  padding: 32px;
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.track-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.track-card-header {
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-elevated);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tch-left h3 { font-family:'EB Garamond',serif; font-size:24px; font-weight:700; margin-bottom:4px; }
+.tch-left p { font-size:13px; color:var(--text-secondary); }
+
+.sla-box {
+  padding: 16px 20px;
+  background: var(--saffron-pale);
+  border: 1px solid rgba(255,107,0,0.3);
+  border-radius: var(--radius-md);
+}
+
+.sla-timer { font-family:'JetBrains Mono',monospace; font-size:20px; color:var(--saffron); font-weight:500; }
+.sla-label { font-size:11px; color:var(--text-muted); letter-spacing:1px; text-transform:uppercase; margin-top:2px; }
+
+.sla-progress-bar {
+  height: 6px;
+  background: var(--border);
+  border-radius: 3px;
+  overflow: hidden;
+  margin: 16px 32px;
+}
+
+.slap-fill { height:100%; border-radius:3px; transition:width 1s ease; }
+
+.track-card-body { padding: 24px 32px; }
+
+/* Timeline */
+.timeline { position:relative; padding-left:32px; }
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 28px;
+  animation: tl-in 0.4s ease both;
+}
+
+.tl-item:nth-child(1) { animation-delay:0.1s; }
+.tl-item:nth-child(2) { animation-delay:0.2s; }
+.tl-item:nth-child(3) { animation-delay:0.3s; }
+.tl-item:nth-child(4) { animation-delay:0.4s; }
+
+@keyframes tl-in {
+  from { opacity:0; transform:translateX(-8px); }
+  to { opacity:1; transform:translateX(0); }
+}
+
+.tl-dot {
+  position: absolute;
+  left: -27px;
+  top: 4px;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--bg-card);
+}
+
+.tl-item.done .tl-dot { background:var(--india-green); }
+.tl-item.active .tl-dot { background:var(--accent); box-shadow:0 0 12px rgba(21,101,210,0.5); animation: dot-pulse 1.5s ease-in-out infinite; }
+.tl-item.waiting .tl-dot { background:var(--border-hover); }
+
+@keyframes dot-pulse {
+  0%,100% { box-shadow:0 0 8px rgba(21,101,210,0.4); }
+  50% { box-shadow:0 0 20px rgba(21,101,210,0.7); }
+}
+
+.tl-title { font-size:15px; font-weight:600; margin-bottom:3px; }
+.tl-meta { font-size:12px; color:var(--text-muted); margin-bottom:6px; }
+.tl-desc { font-size:13px; color:var(--text-secondary); line-height:1.6; }
+
+/* ══════════════════════════════════════
+   AUTHORITY DASHBOARD
+══════════════════════════════════════ */
+#screen-authority { display:none; }
+#screen-authority.active { display:block; height:100vh; overflow:hidden; }
+
+.authority-wrap { display:flex; height:calc(100vh - 97px); overflow:hidden; }
+
+.sidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background: var(--bg-surface);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  transition: background var(--transition);
+  overflow-y: auto;
+  height: 100%;
+}
+
+.nav-section-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 16px 24px 8px;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 24px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-size: 14px;
+  font-weight: 500;
+  border-left: 3px solid transparent;
+  position: relative;
+}
+
+.nav-item:hover { color:var(--text-primary); background:var(--bg-elevated); }
+
+.nav-item.active {
+  color: var(--accent);
+  background: var(--accent-pale);
+  border-left-color: var(--accent);
+}
+
+.nav-item .ni { font-size:17px; }
+
+.nav-badge {
+  margin-left: auto;
+  padding: 2px 8px;
+  background: var(--red-pale);
+  color: var(--red);
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.main-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 28px 32px;
+  height: 100%;
+}
+
+.auth-tab { display:none; animation:tab-fade 0.3s ease; }
+.auth-tab.active { display:block; }
+
+@keyframes tab-fade {
+  from { opacity:0; transform:translateY(8px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-family: 'EB Garamond', serif;
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.page-sub { font-size:13px; color:var(--text-secondary); }
+
+/* KPI Grid */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4,1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.kpi-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: all var(--transition);
+  animation: tile-in 0.4s ease both;
+}
+
+.kpi-card:nth-child(1) { animation-delay:0.05s; }
+.kpi-card:nth-child(2) { animation-delay:0.1s; }
+.kpi-card:nth-child(3) { animation-delay:0.15s; }
+.kpi-card:nth-child(4) { animation-delay:0.2s; }
+
+.kpi-card:hover { border-color:var(--border-hover); transform:translateY(-2px); box-shadow:var(--shadow-md); }
+
+.kpi-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+
+.kpi-icon-wrap {
+  width:40px; height:40px;
+  border-radius: var(--radius-sm);
+  display:flex; align-items:center; justify-content:center;
+  font-size:20px;
+}
+
+.kpi-trend {
+  font-size:12px; font-weight:700;
+  padding:3px 8px; border-radius:100px;
+}
+
+.trend-up { background:var(--green-pale); color:var(--india-green); }
+.trend-down { background:var(--red-pale); color:var(--red); }
+
+.kpi-val { font-family:'EB Garamond',serif; font-size:40px; font-weight:700; line-height:1; }
+.kpi-label { font-size:12px; color:var(--text-secondary); margin-top:4px; }
+
+/* Admin heatmap */
+.admin-heatmap-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 24px;
+  animation: tile-in 0.5s ease 0.25s both;
+}
+
+.ahm-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ahm-title { font-family:'EB Garamond',serif; font-size:20px; font-weight:600; }
+
+.filter-pills { display:flex; gap:8px; }
+
+.fpill {
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: 'Source Sans 3', sans-serif;
+}
+
+.fpill:hover { border-color:var(--border-hover); color:var(--text-primary); }
+.fpill.active { border-color:var(--accent); color:var(--accent); background:var(--accent-pale); }
+
+.ahm-canvas-wrap {
+  height: 280px;
+  position: relative;
+}
+
+/* Issues table */
+.table-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  margin-bottom: 24px;
+  animation: tile-in 0.5s ease 0.3s both;
+}
+
+.tw-header {
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tw-title { font-family:'EB Garamond',serif; font-size:20px; font-weight:600; }
+
+table { width:100%; border-collapse:collapse; }
+
+thead { background: var(--bg-elevated); }
+
+th {
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  text-align: left;
+  white-space: nowrap;
+}
+
+td {
+  padding: 14px 16px;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+  transition: background var(--transition);
+}
+
+tbody tr:last-child td { border-bottom:none; }
+tbody tr:hover td { background:var(--bg-elevated); }
+
+.prio-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.prio-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.pd-critical { background: var(--red); }
+.pd-high { background: var(--saffron); }
+.pd-medium { background: var(--amber); }
+.pd-low { background: var(--india-green); }
+
+.sla-cell { min-width: 120px; }
+
+.sla-bar {
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.sla-fill { height:100%; border-radius:2px; }
+
+.act-btns { display:flex; gap:6px; }
+
+.act-btn {
+  padding: 5px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: 'Source Sans 3',sans-serif;
+  white-space: nowrap;
+}
+
+.act-btn:hover { border-color:var(--border-hover); color:var(--text-primary); }
+.act-btn.danger:hover { border-color:var(--red); color:var(--red); background:var(--red-pale); }
+.act-btn.success:hover { border-color:var(--india-green); color:var(--india-green); background:var(--green-pale); }
+
+/* AI suggestions */
+.suggestion-grid { display:flex; flex-direction:column; gap:16px; }
+
+.sug-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(0,151,167,0.25);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  transition: all var(--transition);
+  animation: card-in 0.4s ease both;
+}
+
+.sug-card:nth-child(1) { animation-delay:0.05s; }
+.sug-card:nth-child(2) { animation-delay:0.1s; }
+.sug-card:nth-child(3) { animation-delay:0.15s; }
+
+.sug-card:hover { border-color:rgba(0,151,167,0.45); transform:translateY(-2px); box-shadow:var(--shadow-md); }
+
+.sug-header { display:flex; align-items:flex-start; gap:14px; margin-bottom:14px; }
+
+.sug-icon {
+  width:44px; height:44px;
+  border-radius:var(--radius-sm);
+  background:rgba(0,151,167,0.12);
+  display:flex; align-items:center; justify-content:center;
+  font-size:22px; flex-shrink:0;
+}
+
+.sug-title { font-size:16px; font-weight:600; margin-bottom:3px; }
+.sug-zone { font-size:12px; color:var(--teal); }
+.sug-body { font-size:14px; color:var(--text-secondary); line-height:1.7; }
+.sug-tags { display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+
+.stag {
+  padding: 4px 12px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Chatbot */
+.chatbot-fab {
+  position: fixed;
+  bottom: 24px; right: 24px;
+  z-index: 200;
+  width: 60px; height: 60px;
+  background: linear-gradient(135deg,var(--india-blue),var(--india-blue-light));
+  border: none; border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(0,71,171,0.45);
+  transition: all var(--transition);
+  font-size: 26px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+.chatbot-fab:hover { transform:scale(1.08); box-shadow:0 12px 48px rgba(0,71,171,0.55); }
+
+.chatbot-panel {
+  position: fixed;
+  bottom: 96px; right: 24px;
+  z-index: 200;
+  width: 340px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  display: none;
+  flex-direction: column;
+  animation: slide-up 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+.chatbot-panel.open { display:flex; }
+
+@keyframes slide-up {
+  from { opacity:0; transform:translateY(20px) scale(0.96); }
+  to { opacity:1; transform:translateY(0) scale(1); }
+}
+
+.cb-head {
+  padding: 16px 20px;
+  background: linear-gradient(135deg,var(--india-blue),var(--india-blue-light));
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.cb-head-left h4 { font-family:'EB Garamond',serif; font-size:18px; font-weight:700; color:#fff; }
+.cb-head-left p { font-size:12px; color:rgba(255,255,255,0.75); }
+.cb-close { background:none; border:none; color:rgba(255,255,255,0.8); font-size:20px; cursor:pointer; }
+.cb-close:hover { color:#fff; }
+
+.cb-langs {
+  display: flex; gap:6px; padding:10px 14px;
+  background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+}
+
+.lang-btn {
+  padding: 4px 12px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  color: var(--text-secondary);
+  font-size: 12px; font-weight:600;
+  cursor: pointer; transition: all var(--transition);
+  font-family:'Source Sans 3',sans-serif;
+}
+
+.lang-btn.active { border-color:var(--teal); color:var(--teal); background:rgba(0,151,167,0.1); }
+
+.cb-messages {
+  flex: 1;
+  padding: 16px;
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cb-msg {
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  font-size: 13px;
+  line-height: 1.6;
+  max-width: 88%;
+  animation: msg-pop 0.25s ease;
+}
+
+@keyframes msg-pop {
+  from { opacity:0; transform:translateY(6px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+.cb-msg.bot {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  align-self: flex-start;
+}
+
+.cb-msg.user {
+  background: var(--india-blue-pale);
+  border: 1px solid rgba(0,71,171,0.25);
+  align-self: flex-end;
+  color: var(--text-primary);
+}
+
+.cb-input-area {
+  display: flex; gap:8px; padding:12px;
+  border-top: 1px solid var(--border);
+}
+
+.cb-input {
+  flex: 1; padding: 10px 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 13px; outline:none;
+  transition: border-color var(--transition);
+  font-family:'Source Sans 3',sans-serif;
+}
+
+.cb-input:focus { border-color:var(--accent); }
+
+.cb-send {
+  width:38px; height:38px;
+  background: var(--india-blue);
+  border:none; border-radius:var(--radius-sm);
+  color:#fff; font-size:16px;
+  cursor:pointer; transition:all var(--transition);
+  display:flex; align-items:center; justify-content:center;
+}
+
+.cb-send:hover { background:var(--india-blue-light); }
+
+/* Utility */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  cursor: pointer;
+  background: none; border:none;
+  margin-bottom: 24px;
+  padding: 0;
+  transition: color var(--transition);
+  font-family:'Source Sans 3',sans-serif;
+}
+
+.back-btn:hover { color:var(--accent); }
+
+/* Notification banner */
+.notif-banner {
+  background: var(--india-blue-pale);
+  border-bottom: 1px solid rgba(0,71,171,0.2);
+  padding: 10px 24px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .notif-banner { background: rgba(0,71,171,0.06); }
+
+.notif-banner strong { color: var(--text-primary); }
+
+/* 3D SPINNING WHEEL (Ashoka Chakra) */
+@keyframes chakra-spin {
+  from { transform: rotateY(0deg) rotateX(10deg); }
+  to { transform: rotateY(360deg) rotateX(10deg); }
+}
+
+.chakra-3d {
+  animation: chakra-spin 12s linear infinite;
+  transform-style: preserve-3d;
+}
+
+/* Floating particles */
+.particles-wrap { position:absolute; inset:0; pointer-events:none; overflow:hidden; }
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.4;
+  animation: float-particle linear infinite;
+}
+
+@keyframes float-particle {
+  0% { transform: translateY(100%) translateX(0); opacity:0; }
+  10% { opacity:0.4; }
+  90% { opacity:0.3; }
+  100% { transform: translateY(-20px) translateX(30px); opacity:0; }
+}
+
+/* Responsive */
+@media(max-width:900px) {
+  .landing-hero { grid-template-columns:1fr; }
+  .kpi-grid { grid-template-columns:repeat(2,1fr); }
+  .category-grid { grid-template-columns:repeat(3,1fr); }
+  .report-layout { grid-template-columns:1fr; }
+  .report-sidebar { display:none; }
+  .form-grid-2 { grid-template-columns:1fr; }
+  .authority-wrap .sidebar { display:none; }
+}
+
+@media(max-width:600px) {
+  .kpi-grid { grid-template-columns:1fr 1fr; }
+  .priority-grid { grid-template-columns:repeat(2,1fr); }
+  .category-grid { grid-template-columns:repeat(2,1fr); }
+  .stats-strip { grid-template-columns:1fr 1fr; }
+  .report-cta-banner { flex-direction:column; }
+  .rcb-right { align-items:stretch; }
+  .btn-report-big { justify-content:center; }
+  .login-panel { padding: 32px 24px; }
+  .gov-ribbon-links { display:none; }
+  .complaints-grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- Global header removed — each screen manages its own header -->
+
+<!-- ══ SHARED CHROME (hidden until login) ══ -->
+<div id="app-chrome" style="display:none;position:sticky;top:0;z-index:100">
+  <div class="gov-ribbon">
+    <div class="gov-ribbon-left">
+      <span>🇮🇳 Government of India</span>
+      <span>·</span>
+      <span>Ministry of Urban Development</span>
+    </div>
+    <div class="gov-ribbon-links">
+      <a href="#">Screen Reader</a>
+      <a href="#">A+ A A-</a>
+      <a href="#">हिंदी</a>
+      <a href="#">Help</a>
+    </div>
+  </div>
+  <div class="app-header">
+    <div class="header-brand">
+      <div class="brand-emblem"><canvas id="emblem-canvas" width="48" height="48"></canvas></div>
+      <div class="brand-text-block">
+        <div class="brand-name-en">NagrikSeva</div>
+        <div class="brand-name-hi">नागरिक सेवा पोर्टल · Civic Issue Reporting</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+        <span class="theme-icon moon">🌙</span>
+        <span class="theme-icon sun">☀️</span>
+      </button>
+      <div class="user-pill" id="user-pill">
+        <div class="user-avatar" id="user-avatar">RS</div>
+        <span class="user-name" id="user-name">Rajesh Singh</span>
+      </div>
+      <button class="btn-outline" onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN 1: LOGIN ONLY (no map)
+══════════════════════════════════════════ -->
+<div id="screen-landing" class="screen active">
+  <div class="login-page-wrap">
+
+    <!-- Top bar -->
+    <div class="login-topbar">
+      <div class="login-gov-ribbon">
+        <span>🇮🇳 Government of India &nbsp;·&nbsp; Ministry of Urban Development</span>
+        <span class="login-ribbon-links"><a href="#">हिंदी</a>&nbsp; <a href="#">Help</a>&nbsp; <a href="#">A+ A-</a></span>
+      </div>
+      <div class="login-header-bar">
+        <div style="display:flex;align-items:center;gap:14px">
+          <div style="width:44px;height:44px;background:var(--india-blue);border-radius:50%;display:flex;align-items:center;justify-content:center">
+            <canvas id="emblem-canvas" width="44" height="44" style="border-radius:50%"></canvas>
+          </div>
+          <div>
+            <div style="font-family:'EB Garamond',serif;font-size:22px;font-weight:700;color:var(--text-primary)">NagrikSeva</div>
+            <div style="font-size:11px;color:var(--text-secondary);letter-spacing:0.5px">नागरिक सेवा पोर्टल · National Civic Issue Portal</div>
+          </div>
+        </div>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle light/dark mode" style="position:relative">
+          <span class="theme-icon moon">🌙</span>
+          <span class="theme-icon sun">☀️</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Split: left branding + right login card -->
+    <div class="login-split">
+
+      <!-- LEFT — Visual identity & stats -->
+      <div class="login-left-panel">
+        <div class="llp-inner">
+          <div class="login-govt-tag">🏛️ Official Government Portal</div>
+          <h1 class="login-headline">Report.<br>Track.<br>Resolve.</h1>
+          <p class="login-sub">India's unified civic complaint platform. File issues, hold authorities accountable, and track every resolution — in real time.</p>
+
+          <div class="tricolor-bar" style="margin:32px 0 28px"></div>
+
+          <div class="login-impact-stats">
+            <div class="lis-item">
+              <div class="lis-val">1.2Cr+</div>
+              <div class="lis-label">Complaints Filed</div>
+            </div>
+            <div class="lis-divider"></div>
+            <div class="lis-item">
+              <div class="lis-val">78%</div>
+              <div class="lis-label">Resolution Rate</div>
+            </div>
+            <div class="lis-divider"></div>
+            <div class="lis-item">
+              <div class="lis-val">500+</div>
+              <div class="lis-label">Cities Covered</div>
+            </div>
+          </div>
+
+          <div class="login-features">
+            <div class="lf-item"><span class="lf-icon">📍</span><span>GPS auto-location tagging</span></div>
+            <div class="lf-item"><span class="lf-icon">🤖</span><span>AI severity analysis & auto-routing</span></div>
+            <div class="lf-item"><span class="lf-icon">📱</span><span>Real-time SMS & push updates</span></div>
+            <div class="lf-item"><span class="lf-icon">🔄</span><span>Duplicate detection & merging</span></div>
+            <div class="lf-item"><span class="lf-icon">⏱️</span><span>SLA timers with auto-escalation</span></div>
+            <div class="lf-item"><span class="lf-icon">🙈</span><span>Full anonymity options</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT — Login card -->
+      <div class="login-right-panel">
+        <div class="login-card">
+          <div class="lc-header">
+            <div class="lc-title">Sign In to Portal</div>
+            <div class="lc-sub">Use your Aadhaar or official credentials</div>
+          </div>
+
+          <div class="login-tabs">
+            <button class="ltab active" onclick="setLoginRole('citizen',this)">👤 Citizen</button>
+            <button class="ltab" onclick="setLoginRole('authority',this)">🏢 Authority</button>
+          </div>
+
+          <div id="citizen-form">
+            <div class="form-group">
+              <label class="form-label">Aadhaar Number *</label>
+              <div class="form-input-wrap">
+                <input id="aadhaar-input" class="form-input" type="text" placeholder="XXXX  XXXX  XXXX" maxlength="14" oninput="formatAadhaar(this)">
+                <span class="input-icon">🔐</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">OTP (sent to linked mobile) *</label>
+              <div class="form-input-wrap">
+                <input id="otp-input" class="form-input" type="text" placeholder="6-digit OTP" maxlength="6">
+                <span class="input-icon">📱</span>
+              </div>
+            </div>
+            <div class="security-note">
+              <span class="sn-icon">🛡️</span>
+              <span>UIDAI-certified authentication. Your data is encrypted and never stored on this portal.</span>
+            </div>
+            <button class="btn-primary login-btn" onclick="loginCitizen()">Verify & Login →</button>
+          </div>
+
+          <div id="authority-form" style="display:none">
+            <div class="form-group">
+              <label class="form-label">Official Email / Employee ID *</label>
+              <div class="form-input-wrap">
+                <input id="auth-email-input" class="form-input" type="text" placeholder="emp@municipalcorp.gov.in">
+                <span class="input-icon">✉️</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password *</label>
+              <div class="form-input-wrap">
+                <input id="auth-password-input" class="form-input" type="password" placeholder="••••••••">
+                <span class="input-icon">🔒</span>
+              </div>
+            </div>
+            <div class="security-note">
+              <span class="sn-icon">🛡️</span>
+              <span>Restricted access — authorised personnel only. All logins are audited.</span>
+            </div>
+            <button class="btn-primary login-btn" onclick="loginAuthority()">Login to Dashboard →</button>
+          </div>
+
+          <div class="lc-footer">
+            <div>Having trouble? Call <strong>1800-XXX-XXXX</strong> (Toll Free)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 2: CITIZEN HOME
+══════════════════════════════════════ -->
+<div id="screen-citizen" class="screen">
+  <div class="notif-banner">
+    🔔 Your complaint <strong>NS-2024-00834</strong> has been assigned to PWD Team 3 — estimated resolution in <strong>18 hours</strong>.
+    <span style="margin-left:auto;cursor:pointer;color:var(--text-muted)">✕</span>
+  </div>
+
+  <div class="citizen-body">
+
+    <!-- BIG REPORT CTA -->
+    <div class="report-cta-banner">
+      <div class="rcb-left">
+        <div class="rcb-tag">📢 Report a Civic Issue</div>
+        <h2>Spotted a problem<br>in your area?</h2>
+        <p>Report potholes, water leaks, broken lights, blocked drains — we route it to the right department instantly.</p>
+      </div>
+      <div class="rcb-right">
+        <button class="btn-report-big" onclick="showReport()">
+          <span class="brb-icon">📸</span>
+          Report Now
+        </button>
+        <div class="rcb-badges">
+          <span class="rcb-badge">📍 GPS Tagging</span>
+          <span class="rcb-badge">🤖 AI Routing</span>
+          <span class="rcb-badge">🔄 Real-time Updates</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-strip">
+      <div class="stat-tile">
+        <div class="st-icon-wrap blue">📋</div>
+        <div class="sv" style="color:var(--india-blue-light)">5</div>
+        <div class="st-label">My Total Reports</div>
+        <div class="st-delta delta-up">↑ 2 this month</div>
+      </div>
+      <div class="stat-tile">
+        <div class="st-icon-wrap amber">⏳</div>
+        <div class="sv" style="color:var(--amber)">1</div>
+        <div class="st-label">In Progress</div>
+        <div class="st-delta" style="color:var(--text-muted)">SLA: 18h remaining</div>
+      </div>
+      <div class="stat-tile">
+        <div class="st-icon-wrap green">✅</div>
+        <div class="sv" style="color:var(--india-green)">3</div>
+        <div class="st-label">Resolved</div>
+        <div class="st-delta delta-up">↑ Avg 34h resolution</div>
+      </div>
+    </div>
+
+    <!-- MY COMPLAINTS -->
+    <div class="section-header">
+      <div class="section-title">My Complaints</div>
+      <a class="section-link">View all →</a>
+    </div>
+
+    <div class="complaints-grid">
+      <div class="complaint-card progress" onclick="showTrack()">
+        <div class="cc-header">
+          <div class="cc-icon orange">🕳️</div>
+          <span class="status-chip progress"><span class="s-pulse"></span>In Progress</span>
+        </div>
+        <div class="cc-title">Large Pothole — Main Bazaar Road</div>
+        <div class="cc-meta">Ward 7 · PWD Department · 3 days ago</div>
+        <div class="progress-mini"><div class="pm-fill" style="width:65%;background:var(--accent)"></div></div>
+        <div class="cc-footer">
+          <span class="ticket-mono">NS-2024-00834</span>
+          <span style="font-size:12px;color:var(--text-muted)">18h SLA left</span>
+        </div>
+      </div>
+
+      <div class="complaint-card open">
+        <div class="cc-header">
+          <div class="cc-icon yellow">💡</div>
+          <span class="status-chip open"><span class="s-pulse"></span>Open</span>
+        </div>
+        <div class="cc-title">Broken Street Light — Sector 22-B</div>
+        <div class="cc-meta">Ward 5 · Electrical Dept · 6 days ago</div>
+        <div class="progress-mini"><div class="pm-fill" style="width:20%;background:var(--saffron)"></div></div>
+        <div class="cc-footer">
+          <span class="ticket-mono">NS-2024-00801</span>
+          <span style="font-size:12px;color:var(--saffron)">Awaiting assignment</span>
+        </div>
+      </div>
+
+      <div class="complaint-card resolved">
+        <div class="cc-header">
+          <div class="cc-icon teal">🚰</div>
+          <span class="status-chip resolved">✓ Resolved</span>
+        </div>
+        <div class="cc-title">Overflowing Drain — Civil Lines</div>
+        <div class="cc-meta">Ward 3 · Sanitation Dept · 12 days ago</div>
+        <div class="progress-mini"><div class="pm-fill" style="width:100%;background:var(--india-green)"></div></div>
+        <div class="cc-footer">
+          <span class="ticket-mono">NS-2024-00754</span>
+          <span style="font-size:12px;color:var(--india-green)">Resolved in 28h</span>
+        </div>
+      </div>
+
+      <div class="complaint-card escalated">
+        <div class="cc-header">
+          <div class="cc-icon blue">💧</div>
+          <span class="status-chip escalated"><span class="s-pulse"></span>Escalated</span>
+        </div>
+        <div class="cc-title">Water Leakage — Gandhi Nagar</div>
+        <div class="cc-meta">Ward 2 · Water Supply Dept · 15 days ago</div>
+        <div class="progress-mini"><div class="pm-fill" style="width:85%;background:var(--red)"></div></div>
+        <div class="cc-footer">
+          <span class="ticket-mono">NS-2024-00721</span>
+          <span style="font-size:12px;color:var(--red)">⚠ SLA breached</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MINI HEATMAP on citizen page -->
+    <div class="section-header">
+      <div class="section-title">Live Issues Near You</div>
+      <a class="section-link">Full map →</a>
+    </div>
+
+    <div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-xl);overflow:hidden;margin-bottom:32px">
+      <div style="position:relative;height:240px">
+        <canvas id="citizen-map-canvas"></canvas>
+        <div class="live-chip" style="position:absolute;top:14px;left:14px;font-size:11px">
+          <div class="live-dot"></div>Live
+        </div>
+        <div style="position:absolute;top:14px;right:14px;background:rgba(17,24,39,0.85);border:1px solid var(--border);border-radius:var(--radius-sm);padding:8px 12px;font-size:12px;backdrop-filter:blur(10px)">
+          <div style="color:var(--text-muted);margin-bottom:4px">Within 2km</div>
+          <div><strong>34</strong> active reports</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 3: REPORT ISSUE
+══════════════════════════════════════ -->
+<div id="screen-report" class="screen">
+  <div style="padding:24px 32px 0;max-width:1100px;margin:0 auto;width:100%">
+    <button class="back-btn" onclick="showCitizenHome()">← Back to Home</button>
+  </div>
+
+  <div class="report-layout">
+    <!-- Main form -->
+    <div class="form-card">
+      <div class="form-card-header">
+        <h2>📝 File a Civic Complaint</h2>
+        <p>All fields marked with * are required. Your complaint will be AI-routed to the relevant department within minutes.</p>
+      </div>
+
+      <div class="form-body">
+
+        <div class="form-section-title">Category *</div>
+        <div class="category-grid">
+          <button class="cat-btn selected" onclick="selectCat(this)">
+            <span class="cat-btn-icon">🕳️</span>
+            <span class="cat-btn-label">Road / Pothole</span>
+          </button>
+          <button class="cat-btn" onclick="selectCat(this)">
+            <span class="cat-btn-icon">💧</span>
+            <span class="cat-btn-label">Water Supply</span>
+          </button>
+          <button class="cat-btn" onclick="selectCat(this)">
+            <span class="cat-btn-icon">💡</span>
+            <span class="cat-btn-label">Street Light</span>
+          </button>
+          <button class="cat-btn" onclick="selectCat(this)">
+            <span class="cat-btn-icon">🚰</span>
+            <span class="cat-btn-label">Drain / Sewer</span>
+          </button>
+          <button class="cat-btn" onclick="selectCat(this)">
+            <span class="cat-btn-icon">🗑️</span>
+            <span class="cat-btn-label">Garbage</span>
+          </button>
+          <button class="cat-btn" onclick="selectCat(this)">
+            <span class="cat-btn-icon">🌳</span>
+            <span class="cat-btn-label">Trees / Parks</span>
+          </button>
+          <button class="cat-btn" onclick="selectCat(this)">
+            <span class="cat-btn-icon">🚦</span>
+            <span class="cat-btn-label">Traffic Signal</span>
+          </button>
+          <button class="cat-btn" onclick="selectCat(this)">
+            <span class="cat-btn-icon">⚡</span>
+            <span class="cat-btn-label">Electrical</span>
+          </button>
+        </div>
+
+        <div class="form-section-title">Priority Level *</div>
+        <div class="priority-grid">
+          <button class="prio-btn low" data-prio="low" onclick="selectPrio(this,'low')">
+            <span class="prio-icon">🟢</span>
+            <span class="prio-label">Low</span>
+          </button>
+          <button class="prio-btn medium sel" data-prio="medium" onclick="selectPrio(this,'medium')">
+            <span class="prio-icon">🟡</span>
+            <span class="prio-label">Medium</span>
+          </button>
+          <button class="prio-btn high" data-prio="high" onclick="selectPrio(this,'high')">
+            <span class="prio-icon">🟠</span>
+            <span class="prio-label">High</span>
+          </button>
+          <button class="prio-btn critical" data-prio="critical" onclick="selectPrio(this,'critical')">
+            <span class="prio-icon">🔴</span>
+            <span class="prio-label">Critical</span>
+          </button>
+        </div>
+
+        <div class="form-section-title">Description *</div>
+        <div class="form-group">
+          <textarea class="form-input" rows="4" placeholder="Describe the issue clearly — how long has it been there, how does it affect daily life, any safety concerns..." style="resize:vertical"></textarea>
+        </div>
+
+        <div class="form-section-title">Location *</div>
+        <div class="location-bar" style="margin-bottom:8px">
+          <input class="form-input" type="text" id="loc-field" placeholder="Type address or use GPS..." style="margin-bottom:0">
+          <button class="gps-btn" onclick="autoGPS()">📍 Auto-detect GPS</button>
+        </div>
+        <div style="font-size:12px;color:var(--text-muted)">Works offline — uses cached map tiles for low-connectivity areas.</div>
+
+        <div class="form-section-title">Photo / Video Evidence *</div>
+        <div class="photo-dropzone" onclick="addPhoto()" id="dropzone">
+          <div class="pd-icon">📷</div>
+          <div class="pd-title">Tap to capture or upload</div>
+          <div class="pd-sub">JPG, PNG, MP4 · Max 10MB · Low-bandwidth upload mode available</div>
+        </div>
+        <input type="file" id="photo-input" style="display:none" accept="image/*,video/*" multiple>
+        <div class="photo-thumbs" id="photo-thumbs">
+          <div class="photo-thumb">🕳️</div>
+          <div class="photo-thumb">📍</div>
+        </div>
+        <div class="ai-insight" id="ai-insight">
+          <span class="ai-icon">🤖</span>
+          <div class="ai-text">
+            <strong>AI Analysis:</strong> Large pothole detected — classified as <strong>High Severity</strong>.<br>
+            Auto-routing to <strong>PWD Department, Ward 7</strong>. 2 similar nearby reports detected — merged for higher priority.
+          </div>
+        </div>
+
+        <div class="form-section-title">Contact Details</div>
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label">Mobile Number</label>
+            <input class="form-input" type="tel" placeholder="+91 XXXXX XXXXX">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Ward / Pincode</label>
+            <input class="form-input" type="text" placeholder="Ward 7 / 143001">
+          </div>
+        </div>
+
+        <div class="form-section-title">Anonymity Options</div>
+        <div class="anon-options">
+          <label class="anon-card">
+            <input type="checkbox">
+            <div>
+              <div class="anon-label">🙈 Anonymous to Public</div>
+              <div class="anon-desc">Your name won't appear on the public issue board</div>
+            </div>
+          </label>
+          <label class="anon-card">
+            <input type="checkbox">
+            <div>
+              <div class="anon-label">🔒 Anonymous to Authorities</div>
+              <div class="anon-desc">Officials won't see your identity. Updates sent via masked SMS.</div>
+            </div>
+          </label>
+        </div>
+
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-ghost" onclick="showCitizenHome()">Cancel</button>
+        <button class="btn-ghost">Save Draft</button>
+        <button class="btn-submit" onclick="submitComplaint()">Submit Complaint →</button>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="report-sidebar">
+      <div class="sidebar-card">
+        <div class="sc-title">📋 How It Works</div>
+        <div class="sc-steps">
+          <div class="sc-step"><div class="sc-num">1</div><div>Fill in category, priority, and description of the issue</div></div>
+          <div class="sc-step"><div class="sc-num">2</div><div>Add GPS location — works offline with cached maps</div></div>
+          <div class="sc-step"><div class="sc-num">3</div><div>Upload photo evidence — AI analyses severity automatically</div></div>
+          <div class="sc-step"><div class="sc-num">4</div><div>Submit — you receive a unique ticket ID instantly</div></div>
+          <div class="sc-step"><div class="sc-num">5</div><div>Track progress via SMS + portal updates at every stage</div></div>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sc-title">⏱️ SLA Timelines</div>
+        <div class="sc-steps">
+          <div class="sc-step"><div class="sc-num" style="background:var(--red-pale);color:var(--red)">!</div><div><strong>Critical:</strong> 24 hours (safety-critical)</div></div>
+          <div class="sc-step"><div class="sc-num" style="background:var(--saffron-pale);color:var(--saffron)">H</div><div><strong>High:</strong> 48 hours</div></div>
+          <div class="sc-step"><div class="sc-num" style="background:var(--amber-pale);color:var(--amber)">M</div><div><strong>Medium:</strong> 5 working days</div></div>
+          <div class="sc-step"><div class="sc-num" style="background:var(--green-pale);color:var(--india-green)">L</div><div><strong>Low:</strong> 15 working days</div></div>
+        </div>
+      </div>
+      <div class="sidebar-card">
+        <div class="sc-title">📞 Emergency Contacts</div>
+        <div class="sc-steps">
+          <div class="sc-step"><div class="sc-num">☎</div><div>Helpline: <strong>1800-XXX-XXXX</strong> (toll-free)</div></div>
+          <div class="sc-step"><div class="sc-num">🚨</div><div>Emergency: <strong>112</strong></div></div>
+          <div class="sc-step"><div class="sc-num">💧</div><div>Water Emergency: <strong>1916</strong></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 4: TICKET CONFIRMATION
+══════════════════════════════════════ -->
+<div id="screen-ticket" class="screen">
+  <div class="ticket-page">
+    <div class="ticket-card">
+      <div class="ticket-check">✅</div>
+      <h2>Complaint Submitted!</h2>
+      <p class="tc-sub">Your complaint has been registered and is being reviewed.</p>
+
+      <div class="ticket-id-box">
+        <div class="tid-label">Your Unique Ticket ID</div>
+        <div class="tid">NS-2024-00835</div>
+      </div>
+
+      <div class="ticket-info-rows">
+        <div class="tir">
+          <span class="tir-icon">🤖</span>
+          <div class="tir-text">AI routed to: <strong>PWD Department — Ward 7</strong></div>
+        </div>
+        <div class="tir">
+          <span class="tir-icon">🔄</span>
+          <div class="tir-text">2 nearby reports merged — priority elevated to <strong>High</strong></div>
+        </div>
+        <div class="tir">
+          <span class="tir-icon">📱</span>
+          <div class="tir-text">SMS confirmation sent to <strong>+91 98XXX XXXXX</strong></div>
+        </div>
+        <div class="tir">
+          <span class="tir-icon">⏱️</span>
+          <div class="tir-text">SLA deadline: <strong>48 hours</strong> — auto-escalates if breached</div>
+        </div>
+      </div>
+
+      <div class="progress-steps">
+        <div class="ps-step done"><div class="ps-circle">✓</div><div class="ps-label">Submitted</div></div>
+        <div class="ps-step active"><div class="ps-circle">⚡</div><div class="ps-label">Assigned</div></div>
+        <div class="ps-step waiting"><div class="ps-circle">3</div><div class="ps-label">In Progress</div></div>
+        <div class="ps-step waiting"><div class="ps-circle">4</div><div class="ps-label">Resolved</div></div>
+      </div>
+
+      <div class="ticket-actions">
+        <button class="btn-ghost" onclick="showCitizenHome()">← Home</button>
+        <button class="btn-track" onclick="showTrack()">Track Status →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 5: TRACK STATUS
+══════════════════════════════════════ -->
+<div id="screen-track" class="screen">
+  <div class="track-body">
+    <button class="back-btn" onclick="showCitizenHome()">← Back to Home</button>
+
+    <div class="track-card">
+      <div class="track-card-header">
+        <div class="tch-left">
+          <h3>Complaint NS-2024-00834</h3>
+          <p>🕳️ Pothole — Main Bazaar Road, Ward 7 &nbsp;·&nbsp; Submitted Nov 17, 2024</p>
+        </div>
+        <div class="sla-box">
+          <div class="sla-timer">18h 32m</div>
+          <div class="sla-label">SLA Remaining</div>
+        </div>
+      </div>
+
+      <div style="padding:20px 32px 0;display:flex;justify-content:space-between;align-items:center">
+        <span class="status-chip progress" style="font-size:13px;padding:7px 18px"><span class="s-pulse"></span>In Progress</span>
+        <span style="font-size:13px;color:var(--text-muted)">PWD Team 3 assigned &nbsp;·&nbsp; Officer: Suresh Kumar</span>
+      </div>
+
+      <div class="sla-progress-bar">
+        <div class="slap-fill" style="width:62%;background:linear-gradient(90deg,var(--india-green),var(--saffron))"></div>
+      </div>
+
+      <div class="track-card-body">
+        <div class="form-section-title" style="margin-top:0">Progress Steps</div>
+        <div class="progress-steps" style="margin-bottom:28px">
+          <div class="ps-step done"><div class="ps-circle">✓</div><div class="ps-label">Submitted</div></div>
+          <div class="ps-step done"><div class="ps-circle">✓</div><div class="ps-label">Verified</div></div>
+          <div class="ps-step active"><div class="ps-circle">🔧</div><div class="ps-label">In Progress</div></div>
+          <div class="ps-step waiting"><div class="ps-circle">4</div><div class="ps-label">Resolved</div></div>
+        </div>
+
+        <div class="form-section-title">Activity Timeline</div>
+        <div class="timeline">
+          <div class="tl-item active">
+            <div class="tl-dot"></div>
+            <div class="tl-title">Field team dispatched to site</div>
+            <div class="tl-meta">Nov 20, 2024 · 9:15 AM · Assigned Officer: Suresh Kumar, PWD Ward 7</div>
+            <div class="tl-desc">Team 3 scheduled to repair Nov 21. Required materials: cold-mix asphalt, road signs.</div>
+          </div>
+          <div class="tl-item done">
+            <div class="tl-dot"></div>
+            <div class="tl-title">Complaint verified by PWD Department</div>
+            <div class="tl-meta">Nov 18, 2024 · 2:30 PM</div>
+            <div class="tl-desc">Field inspection confirmed. Pothole classified as 60cm × 40cm, depth 8cm.</div>
+          </div>
+          <div class="tl-item done">
+            <div class="tl-dot"></div>
+            <div class="tl-title">Auto-routed to PWD Department</div>
+            <div class="tl-meta">Nov 17, 2024 · 10:34 AM · AI Classification: Road Damage</div>
+          </div>
+          <div class="tl-item done">
+            <div class="tl-dot"></div>
+            <div class="tl-title">Complaint submitted successfully</div>
+            <div class="tl-meta">Nov 17, 2024 · 10:32 AM · Ticket NS-2024-00834 generated</div>
+          </div>
+        </div>
+
+        <div style="background:var(--saffron-pale);border:1px solid rgba(255,107,0,0.3);border-radius:var(--radius-md);padding:16px 20px;margin-top:24px">
+          <div style="font-size:13px;font-weight:600;margin-bottom:4px;color:var(--saffron)">⚠ Auto-Escalation Warning</div>
+          <div style="font-size:13px;color:var(--text-secondary)">If not resolved by <strong>Nov 21, 10:32 AM</strong>, this complaint auto-escalates to the Deputy Commissioner's office.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SCREEN 6: AUTHORITY DASHBOARD
+══════════════════════════════════════ -->
+<div id="screen-authority" class="screen">
+  <div class="authority-wrap">
+    <div class="sidebar">
+      <div class="nav-section-label">Overview</div>
+      <div class="nav-item active" onclick="authTab('dashboard',this)"><span class="ni">📊</span>Dashboard</div>
+      <div class="nav-item" onclick="authTab('issues',this)"><span class="ni">📋</span>All Complaints<span class="nav-badge">84</span></div>
+      <div class="nav-item" onclick="authTab('hotspots',this)"><span class="ni">🗺️</span>Hotspot Map</div>
+
+      <div class="nav-section-label">Management</div>
+      <div class="nav-item" onclick="authTab('suggestions',this)"><span class="ni">🤖</span>AI Suggestions</div>
+      <div class="nav-item"><span class="ni">👥</span>Departments</div>
+      <div class="nav-item"><span class="ni">⚡</span>Escalations<span class="nav-badge">3</span></div>
+
+      <div class="nav-section-label">Reports</div>
+      <div class="nav-item"><span class="ni">📈</span>Analytics</div>
+      <div class="nav-item"><span class="ni">📥</span>Export</div>
+
+      <div style="padding:16px;margin-top:auto">
+        <div style="padding:14px;background:var(--red-pale);border:1px solid rgba(229,57,53,0.25);border-radius:var(--radius-md)">
+          <div style="font-size:12px;font-weight:700;color:var(--red)">⚠️ 3 SLA Breaches</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;line-height:1.5">Requires immediate action — escalating to senior officers</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+
+      <!-- TAB: Dashboard -->
+      <div id="auth-tab-dashboard" class="auth-tab active">
+        <div class="page-header">
+          <div>
+            <div class="page-title">Dashboard Overview</div>
+            <div class="page-sub">Amritsar Municipal Corporation · November 2024</div>
+          </div>
+          <div class="filter-pills">
+            <button class="fpill active">This Month</button>
+            <button class="fpill">This Week</button>
+            <button class="fpill">Today</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrap" style="background:var(--india-blue-pale)">📋</div>
+              <div class="kpi-trend trend-up">↑ 12%</div>
+            </div>
+            <div class="kpi-val" style="color:var(--india-blue-light)">1,247</div>
+            <div class="kpi-label">Total Issues This Month</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrap" style="background:var(--red-pale)">🔴</div>
+              <div class="kpi-trend trend-down">↓ 8%</div>
+            </div>
+            <div class="kpi-val" style="color:var(--red)">84</div>
+            <div class="kpi-label">High Priority Open</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrap" style="background:var(--green-pale)">✅</div>
+              <div class="kpi-trend trend-up">↑ 23%</div>
+            </div>
+            <div class="kpi-val" style="color:var(--india-green)">968</div>
+            <div class="kpi-label">Resolved</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-header">
+              <div class="kpi-icon-wrap" style="background:var(--amber-pale)">⏱️</div>
+              <div class="kpi-trend trend-down">↓ 2.1h</div>
+            </div>
+            <div class="kpi-val" style="color:var(--amber)">38h</div>
+            <div class="kpi-label">Avg Resolution Time</div>
+          </div>
+        </div>
+
+        <div class="admin-heatmap-wrap">
+          <div class="ahm-header">
+            <div class="ahm-title">🗺️ Live Hotspot Map — Amritsar</div>
+            <div class="filter-pills">
+              <button class="fpill active">All Types</button>
+              <button class="fpill">Potholes</button>
+              <button class="fpill">Water</button>
+              <button class="fpill">Lights</button>
+            </div>
+          </div>
+          <div class="ahm-canvas-wrap" style="position:relative">
+            <canvas id="admin-map-canvas"></canvas>
+            <div class="map-legend" style="bottom:12px;left:12px">
+              <div class="map-legend-title">Density</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#EF5350"></div>Critical</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#FF6B00"></div>High</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#F59E0B"></div>Medium</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#2E7D32"></div>Low</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <div class="tw-header">
+            <div class="tw-title">Critical & High Priority Issues</div>
+            <button class="fpill active" onclick="authTab('issues',null)">View All →</button>
+          </div>
+          <table>
+            <thead><tr>
+              <th>Ticket</th><th>Issue</th><th>Location</th><th>Priority</th><th>Status</th><th>SLA</th><th>Actions</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted)">NS-00835</span></td>
+                <td>🕳️ Pothole</td><td>Main Bazaar, W7</td>
+                <td><div class="prio-indicator"><div class="prio-dot pd-critical"></div>Critical</div></td>
+                <td><span class="status-chip open">Open</span></td>
+                <td class="sla-cell"><span style="color:var(--red);font-size:12px">2h left</span><div class="sla-bar"><div class="sla-fill" style="width:92%;background:var(--red)"></div></div></td>
+                <td><div class="act-btns"><button class="act-btn">Assign</button><button class="act-btn danger">Escalate</button></div></td>
+              </tr>
+              <tr>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted)">NS-00831</span></td>
+                <td>💧 Water Leak</td><td>Gandhi Nagar, W2</td>
+                <td><div class="prio-indicator"><div class="prio-dot pd-high"></div>High</div></td>
+                <td><span class="status-chip progress">In Progress</span></td>
+                <td class="sla-cell"><span style="color:var(--amber);font-size:12px">18h left</span><div class="sla-bar"><div class="sla-fill" style="width:62%;background:var(--amber)"></div></div></td>
+                <td><div class="act-btns"><button class="act-btn">View</button><button class="act-btn success">Update</button></div></td>
+              </tr>
+              <tr>
+                <td><span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted)">NS-00828</span></td>
+                <td>🚰 Drain Block</td><td>Ranjit Ave, W4</td>
+                <td><div class="prio-indicator"><div class="prio-dot pd-high"></div>High</div></td>
+                <td><span class="status-chip open">Open</span></td>
+                <td class="sla-cell"><span style="font-size:12px">31h left</span><div class="sla-bar"><div class="sla-fill" style="width:45%;background:var(--india-blue-light)"></div></div></td>
+                <td><div class="act-btns"><button class="act-btn">Assign</button><button class="act-btn danger">Escalate</button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: All Issues -->
+      <div id="auth-tab-issues" class="auth-tab">
+        <div class="page-header">
+          <div><div class="page-title">All Complaints</div><div class="page-sub">1,247 total this month</div></div>
+          <div style="display:flex;gap:10px">
+            <select class="form-input" style="width:auto;padding:8px 14px;font-size:13px">
+              <option>All Wards</option><option>Ward 1–4</option><option>Ward 5–8</option>
+            </select>
+            <select class="form-input" style="width:auto;padding:8px 14px;font-size:13px">
+              <option>All Departments</option><option>PWD</option><option>Water Supply</option><option>Electrical</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-pills" style="margin-bottom:16px">
+          <button class="fpill active">All (1247)</button>
+          <button class="fpill">🔴 Critical (14)</button>
+          <button class="fpill">🟠 High (70)</button>
+          <button class="fpill">✅ Resolved (968)</button>
+          <button class="fpill">⚠️ Escalated (28)</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Ticket</th><th>Type</th><th>Location</th><th>Reporter</th><th>Priority</th><th>Dept</th><th>Status</th><th>SLA</th><th>Actions</th></tr></thead>
+            <tbody>
+              <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px">NS-00835</td><td>🕳️ Pothole</td><td>Main Bazaar W7</td><td>Anonymous</td><td><div class="prio-indicator"><div class="prio-dot pd-critical"></div>Critical</div></td><td>PWD</td><td><span class="status-chip open">Open</span></td><td style="color:var(--red);font-size:12px">2h left</td><td><div class="act-btns"><button class="act-btn">Assign</button><button class="act-btn danger">⚠</button></div></td></tr>
+              <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px">NS-00834</td><td>🕳️ Pothole</td><td>Main Bazaar W7</td><td>Rajesh S.</td><td><div class="prio-indicator"><div class="prio-dot pd-high"></div>High</div></td><td>PWD</td><td><span class="status-chip progress">In Progress</span></td><td style="color:var(--amber);font-size:12px">18h left</td><td><div class="act-btns"><button class="act-btn">View</button><button class="act-btn success">Update</button></div></td></tr>
+              <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px">NS-00831</td><td>💧 Water</td><td>Gandhi Nagar</td><td>Priya M.</td><td><div class="prio-indicator"><div class="prio-dot pd-high"></div>High</div></td><td>Water</td><td><span class="status-chip progress">In Progress</span></td><td style="color:var(--amber);font-size:12px">22h</td><td><div class="act-btns"><button class="act-btn">View</button></div></td></tr>
+              <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px">NS-00829</td><td>💡 Light</td><td>Sector 22-B</td><td>Manpreet K.</td><td><div class="prio-indicator"><div class="prio-dot pd-medium"></div>Medium</div></td><td>Electrical</td><td><span class="status-chip open">Open</span></td><td style="font-size:12px">48h</td><td><div class="act-btns"><button class="act-btn">Assign</button></div></td></tr>
+              <tr><td style="font-family:'JetBrains Mono',monospace;font-size:12px">NS-00821</td><td>🗑️ Garbage</td><td>Lawrence Rd</td><td>Gurpreet S.</td><td><div class="prio-indicator"><div class="prio-dot pd-low"></div>Low</div></td><td>Sanitation</td><td><span class="status-chip resolved">✓ Resolved</span></td><td style="color:var(--india-green);font-size:12px">Done</td><td><div class="act-btns"><button class="act-btn">Close</button></div></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- TAB: Hotspots -->
+      <div id="auth-tab-hotspots" class="auth-tab">
+        <div class="page-header">
+          <div><div class="page-title">Hotspot Analytics</div><div class="page-sub">Recurring issue zones — data-driven planning</div></div>
+        </div>
+        <div class="admin-heatmap-wrap">
+          <div class="ahm-canvas-wrap" style="position:relative;height:380px">
+            <canvas id="hotspot-map-canvas"></canvas>
+            <div class="map-legend">
+              <div class="map-legend-title">Issue Density</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#EF5350"></div>Critical (30+)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#FF6B00"></div>High (15–30)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#F59E0B"></div>Medium (5–15)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#2E7D32"></div>Low (&lt;5)</div>
+            </div>
+          </div>
+        </div>
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon-wrap" style="background:var(--saffron-pale);margin-bottom:12px">🕳️</div><div class="kpi-val" style="color:var(--saffron);font-size:30px">412</div><div class="kpi-label">Potholes</div></div>
+          <div class="kpi-card"><div class="kpi-icon-wrap" style="background:var(--india-blue-pale);margin-bottom:12px">💧</div><div class="kpi-val" style="color:var(--india-blue-light);font-size:30px">287</div><div class="kpi-label">Water Issues</div></div>
+          <div class="kpi-card"><div class="kpi-icon-wrap" style="background:var(--amber-pale);margin-bottom:12px">💡</div><div class="kpi-val" style="color:var(--amber);font-size:30px">198</div><div class="kpi-label">Street Lights</div></div>
+          <div class="kpi-card"><div class="kpi-icon-wrap" style="background:rgba(0,151,167,0.12);margin-bottom:12px">🚰</div><div class="kpi-val" style="color:var(--teal);font-size:30px">163</div><div class="kpi-label">Drains</div></div>
+        </div>
+      </div>
+
+      <!-- TAB: AI Suggestions -->
+      <div id="auth-tab-suggestions" class="auth-tab">
+        <div class="page-header">
+          <div><div class="page-title">🤖 AI Infrastructure Recommendations</div><div class="page-sub">Generated from complaint pattern analysis · Updated 2h ago</div></div>
+        </div>
+        <div class="suggestion-grid">
+          <div class="sug-card">
+            <div class="sug-header">
+              <div class="sug-icon">🕳️</div>
+              <div><div class="sug-title">Full Resurfacing Required — Main Bazaar Zone</div><div class="sug-zone">📍 Ward 7 · PWD Department</div></div>
+            </div>
+            <div class="sug-body">Analysis of 42 pothole complaints over 90 days indicates severe base-layer deterioration, likely caused by water ingress from an adjacent broken drain (NS-00721). Patch repairs are temporary — a full 1.2km resurfacing is recommended. Projected savings vs repeated patches: <strong>₹8.4 lakhs over 2 years.</strong></div>
+            <div class="sug-tags"><span class="stag">🏗️ Structural</span><span class="stag">Root Cause: Water Ingress</span><span class="stag">Est: ₹14.2L</span><span class="stag">ROI: 18 months</span></div>
+          </div>
+          <div class="sug-card">
+            <div class="sug-header">
+              <div class="sug-icon">💡</div>
+              <div><div class="sug-title">Smart LED Upgrade — Sector 22-B to 24-A</div><div class="sug-zone">📍 Wards 4–6 · Electrical Department</div></div>
+            </div>
+            <div class="sug-body">28 street light complaints in 60 days point to 15+ year old infrastructure. IoT-enabled LED fixtures would reduce maintenance calls by <strong>~70%</strong> and cut electricity costs by <strong>40%</strong>. Lights can self-report faults without requiring citizen complaints.</div>
+            <div class="sug-tags"><span class="stag">⚡ Electrical</span><span class="stag">Smart City</span><span class="stag">ROI: 3.2 years</span></div>
+          </div>
+          <div class="sug-card">
+            <div class="sug-header">
+              <div class="sug-icon">🚰</div>
+              <div><div class="sug-title">Pre-Monsoon Drain Desilting — Gandhi Nagar</div><div class="sug-zone">📍 Wards 2–4 · Sanitation Department</div></div>
+            </div>
+            <div class="sug-body">19 drain overflow complaints correlate with last year's urban flooding. Complaint frequency increases <strong>340% during pre-monsoon</strong> (April–June). Scheduled desilting in March would proactively prevent 80% of complaints. Area at risk: ~2,400 residents.</div>
+            <div class="sug-tags"><span class="stag">🌧️ Monsoon Prep</span><span class="stag">Preventive</span><span class="stag">Deadline: March</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /authority-wrap -->
+</div>
+
+<!-- ══════════════════════════════════
+     CHATBOT
+══════════════════════════════════ -->
+<button class="chatbot-fab" onclick="toggleChatbot()">💬</button>
+<div class="chatbot-panel" id="chatbot">
+  <div class="cb-head">
+    <div class="cb-head-left">
+      <h4>NagrikSeva Help</h4>
+      <p>Hindi · Punjabi · English</p>
+    </div>
+    <button class="cb-close" onclick="toggleChatbot()">✕</button>
+  </div>
+  <div class="cb-langs">
+    <button class="lang-btn active" onclick="setLang('en',this)">English</button>
+    <button class="lang-btn" onclick="setLang('hi',this)">हिंदी</button>
+    <button class="lang-btn" onclick="setLang('pa',this)">ਪੰਜਾਬੀ</button>
+  </div>
+  <div class="cb-messages" id="cb-msgs">
+    <div class="cb-msg bot">🙏 Namaste! I can help you report issues, track complaints, or find the right department. How can I assist?</div>
+    <div class="cb-msg user">Pothole complaint status?</div>
+    <div class="cb-msg bot">🔍 Found it! Ticket <strong>NS-2024-00834</strong> is <strong>In Progress</strong>. PWD Team 3 scheduled Nov 21. SLA: 18h remaining. SMS sent ✓</div>
+  </div>
+  <div class="cb-input-area">
+    <input class="cb-input" type="text" placeholder="Type your query..." id="cb-input" onkeyup="cbEnter(event)">
+    <button class="cb-send" onclick="sendMsg()">➤</button>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════
+   THEME SYSTEM
+═══════════════════════════════════════ */
+function toggleTheme() {
+  const html = document.documentElement;
+  const curr = html.getAttribute('data-theme');
+  html.setAttribute('data-theme', curr === 'dark' ? 'light' : 'dark');
+  // Redraw maps
+  setTimeout(() => {
+
+    drawMiniMap('citizen-map-canvas');
+    drawMiniMap('admin-map-canvas');
+    drawMiniMap('hotspot-map-canvas');
+  }, 100);
+}
+
+/* ═══════════════════════════════════════
+   CANVAS — ANIMATED HEATMAPS
+═══════════════════════════════════════ */
+const hotspots = [
+  { x: 0.28, y: 0.25, r: 0.18, count: 42, label: 'Main Bazaar', severity: 'critical' },
+  { x: 0.62, y: 0.48, r: 0.13, count: 28, label: 'Civil Lines', severity: 'high' },
+  { x: 0.42, y: 0.67, r: 0.1, count: 19, label: 'Gandhi Nagar', severity: 'medium' },
+  { x: 0.75, y: 0.32, r: 0.09, count: 15, label: 'Ranjit Ave', severity: 'high' },
+  { x: 0.18, y: 0.72, r: 0.07, count: 8, label: 'Civil Colony', severity: 'medium' },
+  { x: 0.55, y: 0.2, r: 0.06, count: 6, label: 'Heritage St', severity: 'low' },
+  { x: 0.85, y: 0.65, r: 0.05, count: 4, label: 'New Town', severity: 'low' },
+];
+
+const heatColors = {
+  critical: 'rgba(239,83,80,',
+  high: 'rgba(255,107,0,',
+  medium: 'rgba(245,158,11,',
+  low: 'rgba(46,125,50,'
+};
+
+let animFrame = 0;
+let mapAnimId = null;
+
+function drawHeatmap(canvasId, height) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+
+  const parent = canvas.parentElement;
+  canvas.width = parent.clientWidth || 800;
+  canvas.height = height || parent.clientHeight || 400;
+
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const isDark = document.documentElement.getAttribute('data-theme') !== 'light';
+
+  // Background
+  ctx.fillStyle = isDark ? '#0C1220' : '#EEF2FF';
+  ctx.fillRect(0, 0, w, h);
+
+  // Grid
+  ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.04)' : 'rgba(0,0,0,0.04)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i < w; i += 40) {
+    ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, h); ctx.stroke();
+  }
+  for (let i = 0; i < h; i += 40) {
+    ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(w, i); ctx.stroke();
+  }
+
+  // Road network simulation
+  ctx.strokeStyle = isDark ? 'rgba(255,255,255,0.07)' : 'rgba(0,0,0,0.07)';
+  ctx.lineWidth = 2;
+  const roads = [[0.1,0.4,0.9,0.4],[0.3,0,0.3,1],[0.6,0,0.55,1],[0,0.7,1,0.65],[0.1,0.15,0.9,0.2]];
+  roads.forEach(([x1,y1,x2,y2]) => {
+    ctx.beginPath();
+    ctx.moveTo(x1*w, y1*h);
+    ctx.lineTo(x2*w, y2*h);
+    ctx.stroke();
+  });
+
+  // Pulsing hotspots
+  const pulse = Math.sin(animFrame * 0.04) * 0.12 + 0.88;
+
+  hotspots.forEach(hs => {
+    const cx = hs.x * w, cy = hs.y * h;
+    const baseR = hs.r * Math.min(w, h) * pulse;
+
+    // Outer glow
+    const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseR * 1.5);
+    grd.addColorStop(0, heatColors[hs.severity] + '0.6)');
+    grd.addColorStop(0.5, heatColors[hs.severity] + '0.25)');
+    grd.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = grd;
+    ctx.beginPath();
+    ctx.arc(cx, cy, baseR * 1.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Inner core
+    const grd2 = ctx.createRadialGradient(cx, cy, 0, cx, cy, baseR * 0.5);
+    grd2.addColorStop(0, heatColors[hs.severity] + '0.9)');
+    grd2.addColorStop(1, heatColors[hs.severity] + '0.3)');
+    ctx.fillStyle = grd2;
+    ctx.beginPath();
+    ctx.arc(cx, cy, baseR * 0.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Label
+    const labelX = cx + 10, labelY = cy - 8;
+    const labelText = `${hs.label} · ${hs.count}`;
+    ctx.font = 'bold 11px "Source Sans 3", sans-serif';
+    const tw = ctx.measureText(labelText).width;
+
+    ctx.fillStyle = isDark ? 'rgba(13,19,32,0.88)' : 'rgba(255,255,255,0.92)';
+    roundRect(ctx, labelX - 4, labelY - 13, tw + 8, 18, 4);
+    ctx.fill();
+
+    ctx.fillStyle = isDark ? '#EEF2FF' : '#0F172A';
+    ctx.fillText(labelText, labelX, labelY);
+  });
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.arcTo(x + w, y, x + w, y + r, r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+  ctx.lineTo(x + r, y + h);
+  ctx.arcTo(x, y + h, x, y + h - r, r);
+  ctx.lineTo(x, y + r);
+  ctx.arcTo(x, y, x + r, y, r);
+  ctx.closePath();
+}
+
+// drawLandingMap removed — no landing map
+
+function drawMiniMap(id) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const parent = canvas.parentElement;
+  canvas.width = parent.clientWidth;
+  canvas.height = parent.clientHeight || 280;
+  drawHeatmap(id, canvas.height);
+}
+
+function animateMaps() {
+  animFrame++;
+  const active = document.querySelector('.screen.active');
+  if (active) {
+    const id = active.id;
+    if (id === 'screen-citizen') drawMiniMap('citizen-map-canvas');
+    if (id === 'screen-authority') {
+      drawMiniMap('admin-map-canvas');
+      drawMiniMap('hotspot-map-canvas');
+    }
+  }
+  requestAnimationFrame(animateMaps);
+}
+
+/* ═══════════════════════════════════════
+   ASHOKA CHAKRA — 3D Canvas Emblem
+═══════════════════════════════════════ */
+function drawChakra() {
+  // Draw on whichever emblem canvas exists
+  ['emblem-canvas', 'emblem-canvas-chrome'].forEach(cid => {
+    const canvas = document.getElementById(cid);
+    if (canvas) renderChakra(canvas);
+  });
+  requestAnimationFrame(drawChakra);
+}
+
+function renderChakra(canvas) {
+  const ctx = canvas.getContext('2d');
+  const cx = 24, cy = 24, r = 20;
+  const t = Date.now() / 1000;
+
+  ctx.clearRect(0, 0, 48, 48);
+
+  // Background circle
+  ctx.beginPath();
+  ctx.arc(cx, cy, r, 0, Math.PI * 2);
+  ctx.fillStyle = '#0047AB';
+  ctx.fill();
+
+  // 3D tilt effect via scaling
+  ctx.save();
+  ctx.translate(cx, cy);
+  const tiltY = Math.sin(t * 0.8) * 0.2 + 0.85;
+  ctx.scale(1, tiltY);
+
+  // Outer ring
+  ctx.beginPath();
+  ctx.arc(0, 0, r - 2, 0, Math.PI * 2);
+  ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // 24 spokes (Ashoka Chakra)
+  const spokes = 24;
+  const spinAngle = t * 0.5;
+  for (let i = 0; i < spokes; i++) {
+    const angle = (i / spokes) * Math.PI * 2 + spinAngle;
+    const brightness = (Math.cos(angle - spinAngle) * 0.3 + 0.7);
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(Math.cos(angle) * (r - 4), Math.sin(angle) * (r - 4));
+    ctx.strokeStyle = `rgba(255,255,255,${brightness})`;
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+
+  // Center dot
+  ctx.beginPath();
+  ctx.arc(0, 0, 3, 0, Math.PI * 2);
+  ctx.fillStyle = '#fff';
+  ctx.fill();
+
+  ctx.restore();
+}
+
+/* ═══════════════════════════════════════
+   FLOATING PARTICLES
+═══════════════════════════════════════ */
+function createParticles() {
+  const wrap = document.getElementById('landing-particles');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  const colors = ['#FF6B00','#0047AB','#138808','#F5A623'];
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 6 + 3;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      bottom:0;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${Math.random()*8+6}s;
+      animation-delay:${Math.random()*6}s;
+    `;
+    wrap.appendChild(p);
+  }
+}
+
+/* ═══════════════════════════════════════
+   MAP TOOLTIP
+═══════════════════════════════════════ */
+// Tooltip handler removed with landing map
+
+/* ═══════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════ */
+
+/* ══════════════════════════════════════════════
+   CORE NAVIGATION — clean screen switching
+══════════════════════════════════════════════ */
+
+// Hide landing completely after first login
+let isLoggedIn = false;
+
+function gotoScreen(id) {
+  // Hide ALL screens
+  document.querySelectorAll('.screen').forEach(s => {
+    s.style.display = 'none';
+    s.classList.remove('active');
+  });
+  // Show only the target
+  const target = document.getElementById(id);
+  target.style.display = 'block';
+  target.classList.add('active');
+
+  // Redraw maps if needed
+  setTimeout(() => {
+    if (id === 'screen-citizen') drawMiniMap('citizen-map-canvas');
+    if (id === 'screen-authority') {
+      drawMiniMap('admin-map-canvas');
+      drawMiniMap('hotspot-map-canvas');
+    }
+  }, 100);
+}
+
+// Kept for legacy compatibility
+function showScreen(id, isSubNav) { gotoScreen(id); }
+
+function showCitizenHome(fromLogin) {
+  if (fromLogin && !isLoggedIn) {
+    isLoggedIn = true;
+    // Permanently hide the landing screen
+    const landing = document.getElementById('screen-landing');
+    landing.style.display = 'none';
+    landing.classList.remove('active');
+    // Show the shared chrome header
+    document.getElementById('app-chrome').style.display = 'block';
+    const avatarEl = document.getElementById('user-avatar');
+    const nameEl = document.getElementById('user-name');
+    if (window.user) {
+      if (window.user.aadhaar) {
+        avatarEl.textContent = window.user.aadhaar.slice(-2);
+      }
+      if (window.user.name) {
+        nameEl.textContent = window.user.name;
+      }
+    } else {
+      avatarEl.textContent = 'RS';
+      nameEl.textContent = 'Rajesh Singh';
+    }
+    avatarEl.style.background = 'linear-gradient(135deg,#0047AB,#1565D8)';
+  }
+  gotoScreen('screen-citizen');
+  window.scrollTo(0, 0);
+}
+
+function showReport() { gotoScreen('screen-report'); }
+
+function showTrack() { gotoScreen('screen-track'); }
+
+function showAuthorityDashboard() {
+  isLoggedIn = true;
+  // Permanently hide landing
+  const landing = document.getElementById('screen-landing');
+  landing.style.display = 'none';
+  landing.classList.remove('active');
+  // Show chrome
+  document.getElementById('app-chrome').style.display = 'block';
+  document.getElementById('user-avatar').textContent = 'AO';
+  document.getElementById('user-name').textContent = 'Admin Officer';
+  document.getElementById('user-avatar').style.background = 'linear-gradient(135deg,#FF6B00,#FF4500)';
+  gotoScreen('screen-authority');
+  window.scrollTo(0, 0);
+  setTimeout(() => { drawMiniMap('admin-map-canvas'); drawMiniMap('hotspot-map-canvas'); }, 200);
+}
+
+function logout() {
+  isLoggedIn = false;
+  document.getElementById('app-chrome').style.display = 'none';
+  document.getElementById('user-avatar').textContent = 'RS';
+  document.getElementById('user-avatar').style.background = '';
+  document.getElementById('user-name').textContent = 'Rajesh Singh';
+  // Re-show landing
+  const landing = document.getElementById('screen-landing');
+  landing.style.display = 'block';
+  landing.classList.add('active');
+  // Hide all other screens
+  ['screen-citizen','screen-report','screen-track','screen-ticket','screen-authority'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) { el.style.display = 'none'; el.classList.remove('active'); }
+  });
+  window.scrollTo(0, 0);
+  setTimeout(() => renderChakra(document.getElementById('emblem-canvas')), 100);
+}
+
+/* ═══════════════════════════════════════
+   LOGIN FORMS
+═══════════════════════════════════════ */
+function setLoginRole(role, btn) {
+  document.querySelectorAll('.ltab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('citizen-form').style.display = role === 'citizen' ? 'block' : 'none';
+  document.getElementById('authority-form').style.display = role === 'authority' ? 'block' : 'none';
+}
+
+function formatAadhaar(input) {
+  let v = input.value.replace(/\D/g,'').substring(0,12);
+  input.value = v.replace(/(\d{4})(?=\d)/g,'$1  ');
+}
+
+// perform login against backend
+async function loginCitizen() {
+  const aadhaar = document.getElementById('aadhaar-input').value.trim();
+  const otp = document.getElementById('otp-input').value.trim();
+  if (!aadhaar || !otp) {
+    alert('Please enter Aadhaar and OTP');
+    return;
+  }
+  try {
+    const res = await fetch('/api/auth/citizen', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ aadhaar, otp })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      window.sessionToken = data.token;
+      window.user = data.user;
+      // update avatar initials if available
+      if (window.user && window.user.aadhaar) {
+        const ua = document.getElementById('user-avatar');
+        if (ua) ua.textContent = window.user.aadhaar.slice(-2);
+      }
+      showCitizenHome(true);
+    } else {
+      alert(data.error || 'Login failed');
+    }
+  } catch (err) {
+    alert('Network error');
+  }
+}
+
+async function loginAuthority() {
+  const email = document.getElementById('auth-email-input').value.trim();
+  const pwd = document.getElementById('auth-password-input').value.trim();
+  if (!email || !pwd) {
+    alert('Please enter email and password');
+    return;
+  }
+  try {
+    const res = await fetch('/api/auth/authority', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pwd })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      window.sessionToken = data.token;
+      window.user = data.user;
+      if (window.user && window.user.email) {
+        const ua = document.getElementById('user-avatar');
+        if (ua) ua.textContent = window.user.email.charAt(0).toUpperCase();
+      }
+      showAuthorityDashboard();
+    } else {
+      alert(data.error || 'Login failed');
+    }
+  } catch (err) {
+    alert('Network error');
+  }
+}
+
+/* ═══════════════════════════════════════
+   REPORT FORM INTERACTIONS
+═══════════════════════════════════════ */
+function selectCat(btn) {
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function selectPrio(btn, level) {
+  document.querySelectorAll('.prio-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function autoGPS() {
+  const f = document.getElementById('loc-field');
+  if (!navigator.geolocation) {
+    f.value = 'Geolocation not supported';
+    return;
+  }
+  f.value = '⏳ Detecting location…';
+  f.style.color = 'var(--text-muted)';
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude, longitude } = pos.coords;
+    f.value = `Lat ${latitude.toFixed(5)}, Lon ${longitude.toFixed(5)}`;
+    f.style.color = '';
+  }, err => {
+    f.value = 'Unable to get location';
+    f.style.color = 'var(--text-muted)';
+  }, { enableHighAccuracy: true, timeout: 10000 });
+}
+
+let attachedPhotos = [];
+
+function addPhoto() {
+  const input = document.getElementById('photo-input');
+  input.click();
+}
+
+document.getElementById('photo-input').addEventListener('change', e => {
+  const files = Array.from(e.target.files);
+  const wrap = document.getElementById('photo-thumbs');
+  files.forEach(f => {
+    if (f.size > 10 * 1024 * 1024) return; // skip too large
+    attachedPhotos.push(f);
+    const thumb = document.createElement('div');
+    thumb.className = 'photo-thumb';
+    const url = URL.createObjectURL(f);
+    thumb.style.backgroundImage = `url('${url}')`;
+    thumb.style.backgroundSize = 'cover';
+    wrap.appendChild(thumb);
+  });
+  // reset input so same file can be selected again
+  e.target.value = '';
+});
+
+async function submitComplaint() {
+    const description = document.querySelector('#screen-report textarea').value.trim();
+    const location = document.getElementById('loc-field').value.trim();
+    const phone = document.querySelector('#screen-report input[type="tel"]').value.trim();
+    const ward = document.querySelector('#screen-report input[placeholder="Ward 7 / 143001"]')?.value.trim();
+    let priority = 'medium';
+    const sel = document.querySelector('.prio-btn.sel');
+    if (sel && sel.dataset && sel.dataset.prio) {
+      priority = sel.dataset.prio;
+    } else if (sel) {
+      priority = sel.classList.contains('high') ? 'high' : sel.classList.contains('critical') ? 'critical' : sel.classList.contains('low') ? 'low' : 'medium';
+    }
+
+    if (!description || !location) {
+      alert('Description and location required');
+      return;
+    }
+
+    const form = new FormData();
+    form.append('description', description);
+    form.append('location', location);
+    form.append('phone', phone);
+    if (ward) form.append('ward', ward);
+    form.append('priority', priority);
+    attachedPhotos.forEach((f,i) => form.append('photos', f, f.name));
+
+    try {
+      const res = await fetch('/api/reports', {
+        method: 'POST',
+        headers: {
+          'Authorization': window.sessionToken ? 'Bearer ' + window.sessionToken : ''
+        },
+        body: form
+      });
+      const data = await res.json();
+      if (res.ok) {
+        attachedPhotos = [];
+        document.getElementById('photo-thumbs').innerHTML = '';
+        showScreen('screen-ticket');
+      } else {
+        alert(data.error || 'Failed to submit complaint');
+      }
+    } catch (err) {
+      alert('Network error');
+    }
+  }
+
+/* ═══════════════════════════════════════
+   AUTHORITY TABS
+═══════════════════════════════════════ */
+async function authTab(tab, el) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('auth-tab-' + tab).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if (el) el.classList.add('active');
+  const mainContent = document.querySelector('.main-content');
+  if (mainContent) mainContent.scrollTop = 0;
+  if (tab === 'issues' || tab === 'dashboard') {
+    await loadAuthorityReports();
+  }
+  setTimeout(() => {
+    if (tab === 'dashboard') { drawMiniMap('admin-map-canvas'); }
+    if (tab === 'hotspots') { drawMiniMap('hotspot-map-canvas'); }
+  }, 100);
+}
+
+
+async function loadAuthorityReports() {
+  if (!window.sessionToken) return;
+  try {
+    const res = await fetch('/api/reports', {
+      headers: { 'Authorization': 'Bearer ' + window.sessionToken }
+    });
+    const data = await res.json();
+    const tbody = document.querySelector('#auth-tab-issues table tbody');
+    if (tbody) {
+      tbody.innerHTML = '';
+      data.forEach(r => {
+        const tr = document.createElement('tr');
+        const ticketId = 'NS-' + String(r.id).padStart(5,'0');
+        tr.innerHTML = `
+          <td style="font-family:'JetBrains Mono',monospace;font-size:12px">${ticketId}</td>
+          <td>${r.description || ''}</td>
+          <td>${r.location || ''}</td>
+          <td>${r.phone || ''}</td>
+          <td>${r.priority || ''}</td>
+          <td>${r.status || ''}</td>
+          <td>${r.photos && r.photos.length ? r.photos.map(p=>`<a href="${p}" target="_blank">📎</a>`).join(' ') : ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+  } catch (e) {
+    console.error('failed to load reports', e);
+  }
+}
+
+/* ═══════════════════════════════════════
+   FILTER PILLS — interactive
+═══════════════════════════════════════ */
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('fpill')) {
+    const parent = e.target.closest('.filter-pills, .kpi-grid');
+    if (parent) {
+      parent.querySelectorAll('.fpill').forEach(p => p.classList.remove('active'));
+      e.target.classList.add('active');
+    }
+  }
+});
+
+/* ═══════════════════════════════════════
+   CHATBOT
+═══════════════════════════════════════ */
+const cbResponses = {
+  en: [
+    "I can help you report issues, track complaints, or find the right department. What do you need?",
+    "To report a pothole: tap 'Report Now' on your home screen → select 'Road / Pothole' → GPS auto-tags your location.",
+    "You'll receive SMS updates at every stage: submission, assignment, in-progress, and resolution.",
+    "For urgent safety issues, select 'Critical' priority. It auto-escalates to senior officers within 24 hours.",
+    "You can check your complaint status using your ticket ID (e.g., NS-2024-00834) on the Track Status page.",
+    "To stay anonymous: check the anonymity options when filing your complaint. Updates will arrive via masked SMS."
+  ],
+  hi: [
+    "नमस्ते! मैं शिकायत दर्ज करने, स्थिति जांचने या सही विभाग खोजने में मदद करूंगा।",
+    "पोटहोल रिपोर्ट: होम पेज पर 'अभी रिपोर्ट करें' → 'सड़क / गड्ढा' चुनें → GPS स्वचालित रूप से स्थान जोड़ेगा।",
+    "हर चरण पर SMS अपडेट मिलेगा: दर्ज, सौंपा, प्रगति में, और हल।",
+    "आपात स्थिति के लिए 'क्रिटिकल' प्राथमिकता चुनें। 24 घंटे में वरिष्ठ अधिकारी को भेजा जाएगा।"
+  ],
+  pa: [
+    "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਮੈਂ ਸ਼ਿਕਾਇਤ ਦਰਜ ਕਰਨ ਜਾਂ ਸਥਿਤੀ ਜਾਂਚਣ ਵਿੱਚ ਮਦਦ ਕਰ ਸਕਦਾ ਹਾਂ।",
+    "ਸ਼ਿਕਾਇਤ ਦਰਜ ਕਰਨ ਲਈ: 'ਹੁਣੇ ਰਿਪੋਰਟ ਕਰੋ' ਦਬਾਓ → ਸ਼੍ਰੇਣੀ ਚੁਣੋ → GPS ਆਪਣੇ ਆਪ ਥਾਂ ਲੱਭੇਗਾ।",
+    "ਹਰ ਪੜਾਅ ਤੇ SMS ਅੱਪਡੇਟ ਮਿਲੇਗੀ। ਐਮਰਜੈਂਸੀ ਲਈ 'ਕ੍ਰਿਟੀਕਲ' ਚੁਣੋ।"
+  ]
+};
+
+let cbLang = 'en', cbIdx = 0;
+
+function setLang(lang, btn) {
+  cbLang = lang;
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function toggleChatbot() {
+  document.getElementById('chatbot').classList.toggle('open');
+}
+
+function sendMsg() {
+  const input = document.getElementById('cb-input');
+  const msgs = document.getElementById('cb-msgs');
+  const val = input.value.trim();
+  if (!val) return;
+
+  const um = document.createElement('div');
+  um.className = 'cb-msg user'; um.textContent = val;
+  msgs.appendChild(um); input.value = '';
+
+  setTimeout(() => {
+    const responses = cbResponses[cbLang] || cbResponses.en;
+    const bm = document.createElement('div');
+    bm.className = 'cb-msg bot';
+    bm.innerHTML = responses[cbIdx % responses.length]; cbIdx++;
+    msgs.appendChild(bm);
+    msgs.scrollTop = msgs.scrollHeight;
+  }, 600);
+
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function cbEnter(e) { if (e.key === 'Enter') sendMsg(); }
+
+/* ═══════════════════════════════════════
+   INIT
+═══════════════════════════════════════ */
+window.addEventListener('load', () => {
+  drawChakra();
+  setTimeout(() => { animateMaps(); }, 100);
+});
+
+window.addEventListener('resize', () => {
+  drawMiniMap('citizen-map-canvas');
+  drawMiniMap('admin-map-canvas');
+  drawMiniMap('hotspot-map-canvas');
+});
+</script>
+</body>
+</html>
